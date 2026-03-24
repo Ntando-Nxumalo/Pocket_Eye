@@ -5,7 +5,6 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "currency_rates")
 data class CurrencyRate(
-
     @PrimaryKey
     val currencyCode: String,
     val rateToZAR: Double

@@ -5,7 +5,6 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "goals")
 data class Goal(
-
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val minGoal: Double,

@@ -16,9 +16,7 @@ import com.ntando.expensetracker.data.entity.*
     ],
     version = 1
 )
-
 abstract class AppDatabase : RoomDatabase() {
-
     abstract fun userDao(): UserDao
     abstract fun categoryDao(): CategoryDao
     abstract fun expenseDao(): ExpenseDao

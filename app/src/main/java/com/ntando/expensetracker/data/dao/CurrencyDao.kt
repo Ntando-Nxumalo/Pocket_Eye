@@ -2,7 +2,6 @@ package com.ntando.expensetracker.data.dao
 
 import androidx.room.*
 import com.ntando.expensetracker.data.entity.CurrencyRate
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CurrencyDao {

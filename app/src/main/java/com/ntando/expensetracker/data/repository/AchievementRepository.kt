@@ -16,19 +16,14 @@ class AchievementRepository(private val achievementDao: AchievementDao) {
         achievementDao.updateAchievement(achievement)
     }
 
+    /**
+     * Logic to check and unlock achievements based on expense count.
+     */
     suspend fun checkAchievements(db: AppDatabase) {
         val count = db.expenseDao().getExpenseCount()
 
-        if (count >= 1) {
-            db.achievementDao().unlockAchievement("Beginner Saver")
-        }
-
-        if (count >= 5) {
-            db.achievementDao().unlockAchievement("Bronze Tracker")
-        }
-
-        if (count >= 20) {
-            db.achievementDao().unlockAchievement("Silver Tracker")
-        }
+        if (count >= 1) db.achievementDao().unlockAchievement("Beginner Saver")
+        if (count >= 5) db.achievementDao().unlockAchievement("Bronze Tracker")
+        if (count >= 20) db.achievementDao().unlockAchievement("Silver Tracker")
     }
 }
