@@ -1,75 +1,55 @@
 package com.ntando.expensetracker
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.ui.Modifier
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.ntando.expensetracker.data.database.AppDatabase
 import com.ntando.expensetracker.data.database.DatabaseProvider
-import com.ntando.expensetracker.data.entity.Achievement
-import com.ntando.expensetracker.data.entity.Category
-import com.ntando.expensetracker.data.entity.Expense
-import com.ntando.expensetracker.ui.dashboard.DashboardScreen
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                DashboardScreen(modifier = Modifier.padding(innerPadding))
+        setContentView(R.layout.activity_main)
+
+        val etUsername = findViewById<EditText>(R.id.etUsername)
+        val etPassword = findViewById<EditText>(R.id.etPassword)
+        val btnLogin = findViewById<Button>(R.id.btnLogin)
+        val btnRegister = findViewById<Button>(R.id.btnRegister)
+
+        btnLogin.setOnClickListener {
+            val username = etUsername.text.toString().trim()
+            val password = etPassword.text.toString().trim()
+
+            if (username.isNotEmpty() && password.isNotEmpty()) {
+                lifecycleScope.launch {
+                    val db = DatabaseProvider.getDatabase(this@MainActivity)
+                    // Check by name or email
+                    val user = db.userDao().getUserByName(username) ?: db.userDao().getUserByEmail(username)
+                    
+                    if (user != null) {
+                        if (user.password == password) {
+                            val intent = Intent(this@MainActivity, Dashboard::class.java)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            Toast.makeText(this@MainActivity, "Incorrect password", Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        Toast.makeText(this@MainActivity, "User not found. Please register.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } else {
+                Toast.makeText(this, "Please enter credentials", Toast.LENGTH_SHORT).show()
             }
         }
 
-        val db = DatabaseProvider.getDatabase(this)
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            setupInitialAchievements(db)
-
-            // Test logic: Insert test data and check achievements
-            db.categoryDao().insertCategory(Category(name = "Food"))
-            db.expenseDao().insertExpense(
-                Expense(
-                    categoryId = 1,
-                    amount = 100.0,
-                    description = "Lunch",
-                    date = "2026-01-01",
-                    startTime = "12:00",
-                    endTime = "12:30",
-                    photoPath = null
-                )
-            )
-            checkAchievements(db)
+        btnRegister.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
         }
     }
-
-    private suspend fun setupInitialAchievements(db: AppDatabase) {
-        val existing = db.achievementDao().getAllAchievements().first()
-        if (existing.isEmpty()) {
-            val defaultAchievements = listOf(
-                Achievement(title = "Beginner Saver", description = "Add first expense", icon = "star"),
-                Achievement(title = "Bronze Tracker", description = "Add 5 expenses", icon = "trending_up"),
-                Achievement(title = "Silver Tracker", description = "Add 20 expenses", icon = "payments"),
-                Achievement(title = "Smart Spender", description = "Stay under budget", icon = "savings")
-            )
-            defaultAchievements.forEach { db.achievementDao().insertAchievement(it) }
-        }
-    }
-
-    private suspend fun checkAchievements(db: AppDatabase) {
-        val count = db.expenseDao().getExpenseCount()
-        if (count >= 1) db.achievementDao().unlockAchievement("Beginner Saver")
-        if (count >= 5) db.achievementDao().unlockAchievement("Bronze Tracker")
-        if (count >= 20) db.achievementDao().unlockAchievement("Silver Tracker")
-    }
-
-    fun convert(amount: Double, rate: Double): Double = amount / rate
 }

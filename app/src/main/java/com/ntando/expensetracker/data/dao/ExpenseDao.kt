@@ -22,13 +22,13 @@ interface ExpenseDao {
     fun getAllExpenses(): Flow<List<Expense>>
 
     @Query("SELECT SUM(amount) FROM expenses")
-    suspend fun getTotalSpending(): Double
+    fun getTotalSpending(): Flow<Double?>
 
     @Query("SELECT categoryId, SUM(amount) as totalAmount FROM expenses GROUP BY categoryId")
-    suspend fun getCategorySummary(): List<CategorySummary>
+    fun getCategorySummary(): Flow<List<CategorySummary>>
 
     @Query("SELECT COUNT(*) FROM expenses")
-    suspend fun getExpenseCount(): Int
+    fun getExpenseCount(): Flow<Int>
 
     @Query("SELECT SUM(amount) FROM expenses WHERE date BETWEEN :startDate AND :endDate")
     fun getTotalExpensesInRange(startDate: Long, endDate: Long): Flow<Double?>

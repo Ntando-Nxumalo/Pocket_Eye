@@ -2,11 +2,13 @@ package com.ntando.expensetracker.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ntando.expensetracker.data.dao.CategorySummary
 import com.ntando.expensetracker.data.entity.Category
 import com.ntando.expensetracker.data.entity.Expense
 import com.ntando.expensetracker.data.repository.ExpenseRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -19,6 +21,20 @@ class ExpenseViewModel(private val repository: ExpenseRepository) : ViewModel() 
     )
 
     val categories: StateFlow<List<Category>> = repository.allCategories.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
+
+    val totalSpending: StateFlow<Double> = repository.totalSpending
+        .map { it ?: 0.0 }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = 0.0
+        )
+
+    val categorySummaries: StateFlow<List<CategorySummary>> = repository.categorySummary.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = emptyList()
