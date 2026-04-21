@@ -8,8 +8,8 @@
     <!-- Title -->
     <TextView
         android:id="@+id/tvTitle"
-        android:text="Add Expense"
         android:textSize="20sp"
+        android:text="Add Expense"
         android:textStyle="bold"
         android:gravity="center"
         android:layout_width="match_parent"
