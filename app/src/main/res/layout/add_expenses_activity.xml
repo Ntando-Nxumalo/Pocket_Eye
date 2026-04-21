@@ -5,73 +5,124 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Title -->
-    <TextView
-        android:id="@+id/tvTitle"
-        android:textSize="20sp"
-        android:text="Add Expense"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="20dp"
-        android:textColor="@android:color/white"
-        android:background="@drawable/btn_gradient"/>
-
-    <!-- Amount -->
-    <EditText
-        android:id="@+id/etAmount"
-        android:hint="R 0.00"
-        android:inputType="numberDecimal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:background="@android:drawable/edit_text"/>
-
-    <!-- Category -->
-    <Spinner
-        android:id="@+id/spCategory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"/>
-
-    <!-- Note -->
-    <EditText
-        android:id="@+id/etNote"
-        android:hint="Add a note..."
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:padding="10dp"
-        android:background="@android:drawable/edit_text"/>
-
-    <!-- Buttons -->
+    <!-- TOP CONTENT (takes remaining space) -->
     <LinearLayout
-        android:orientation="horizontal"
-        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:textSize="20sp"
+            android:text="Add Expense"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/btn_gradient"/>
+
+        <!-- Amount -->
+        <EditText
+            android:id="@+id/etAmount"
+            android:hint="R 0.00"
+            android:inputType="numberDecimal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="@android:drawable/edit_text"/>
+
+        <!-- Category -->
+        <Spinner
+            android:id="@+id/spCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"/>
+
+        <!-- Note -->
+        <EditText
+            android:id="@+id/etNote"
+            android:hint="Add a note..."
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:padding="10dp"
+            android:background="@android:drawable/edit_text"/>
+
+        <!-- Buttons -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp">
+
+            <Button
+                android:id="@+id/btnSave"
+                android:text="Save"
+                android:textColor="@android:color/white"
+                android:background="@drawable/btn_gradient"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"/>
+
+            <Button
+                android:id="@+id/btnCancel"
+                android:text="Cancel"
+                android:backgroundTint="@android:color/holo_blue_dark"
+                android:textColor="@android:color/white"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- ✅ BOTTOM NAV (now fixed at bottom) -->
+    <LinearLayout
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:background="#0D2B45">
 
         <Button
-            android:id="@+id/btnSave"
-            android:text="Save"
-            android:textColor="@android:color/white"
-            android:background="@drawable/btn_gradient"
+            android:id="@+id/btnAddExpense"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginEnd="8dp"/>
+            android:text="Add Expense"
+            android:backgroundTint="#66BB6A"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"/>
 
         <Button
-            android:id="@+id/btnCancel"
-            android:text="Cancel"
-            android:backgroundTint="@android:color/holo_blue_dark"
-            android:textColor="@android:color/white"
+            android:id="@+id/btnGoals"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginStart="8dp"/>
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Goals"
+            android:backgroundTint="#FDD835"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/btnReports"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Reports"
+            android:backgroundTint="#E0E0E0"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"/>
     </LinearLayout>
 
 </LinearLayout>
