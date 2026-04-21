@@ -1,129 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:orientation="vertical">
+
+    <!-- ✅ SCROLLABLE CONTENT -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Header -->
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/btn_gradient"
+                android:gravity="center"
+                android:padding="12dp"
+                android:text="Set Goals"
+                android:textColor="@android:color/black"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:gravity="center"
+                android:text="Plan your monthly budget"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16sp" />
+
+            <!-- Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Monthly Budget Goals"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="6dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Set minimum and maximum spending limits to track your financial progress"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp"
+                android:layout_marginBottom="20dp"/>
+
+            <!-- Minimum Goal -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Minimum Monthly Goal"
+                android:textStyle="bold"
+                android:layout_marginBottom="6dp"/>
+
+            <EditText
+                android:id="@+id/etMinGoal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="R 0.00"
+                android:inputType="numberDecimal"
+                android:padding="10dp"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Minimum amount to save each month"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="12sp"
+                android:layout_marginBottom="20dp"/>
+
+            <!-- Maximum Goal -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Maximum Monthly Goal"
+                android:textStyle="bold"
+                android:layout_marginBottom="6dp"/>
+
+            <EditText
+                android:id="@+id/etMaxGoal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="R 0.00"
+                android:inputType="numberDecimal"
+                android:padding="10dp"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Maximum spending limit for the month"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="12sp"
+                android:layout_marginBottom="28dp"/>
+
+            <!-- Buttons -->
+            <Button
+                android:id="@+id/btnSaveGoals"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_gradient"
+                android:text="Save Goals"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="16dp"/>
+
+            <Button
+                android:id="@+id/btnBackDashboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Back to Dashboard"
+                android:backgroundTint="@android:color/white"
+                android:textColor="@android:color/black"/>
+        </LinearLayout>
+    </ScrollView>
+
 
     <LinearLayout
+        android:id="@+id/bottomNav"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:spacing="12dp">
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:background="#0D2B45">
 
-        <!-- Header -->
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/btn_gradient"
-            android:gravity="center"
-            android:padding="12dp"
-            android:text="Set Goals"
+        <Button
+            android:id="@+id/btnAddExpense"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Add Expense"
+            android:backgroundTint="#66BB6A"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/btnGoals"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Goals"
+            android:backgroundTint="#FDD835"
             android:textColor="@android:color/black"
-            android:textSize="22sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvSubtitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:gravity="center"
-            android:text="Plan your monthly budget"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="16sp" />
-
-        <!-- Section -->
-        <TextView
-            android:id="@+id/tvSection"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:text="Monthly Budget Goals"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvSectionDesc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:text="Set minimum and maximum spending limits to track your financial progress"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="14sp" />
-
-        <!-- Minimum Goal -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:text="Minimum Monthly Goal"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/etMinGoal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="@android:drawable/edit_text"
-            android:hint="R 0.00"
-            android:inputType="numberDecimal"
-            android:padding="10dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:text="Minimum amount to save each month"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="12sp" />
-
-        <!-- Maximum Goal -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:text="Maximum Monthly Goal"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/etMaxGoal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="@android:drawable/edit_text"
-            android:hint="R 0.00"
-            android:inputType="numberDecimal"
-            android:padding="10dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="28dp"
-            android:text="Maximum spending limit for the month"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="12sp" />
-
-        <!-- Buttons -->
-        <Button
-            android:id="@+id/btnSaveGoals"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/btn_gradient"
-            android:padding="12dp"
-            android:text="Save Goals"
-            android:textColor="@android:color/white" />
+            android:textStyle="bold"/>
 
         <Button
-            android:id="@+id/btnBackDashboard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/white"
-            android:padding="12dp"
-            android:text="Back to Dashboard"
-            android:textColor="@android:color/black" />
-
+            android:id="@+id/btnReports"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Reports"
+            android:backgroundTint="#E0E0E0"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"/>
     </LinearLayout>
-</ScrollView>
+
+</LinearLayout>
