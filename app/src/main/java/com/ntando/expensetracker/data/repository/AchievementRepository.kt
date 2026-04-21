@@ -4,6 +4,7 @@ import com.ntando.expensetracker.data.dao.AchievementDao
 import com.ntando.expensetracker.data.database.AppDatabase
 import com.ntando.expensetracker.data.entity.Achievement
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 
 class AchievementRepository(private val achievementDao: AchievementDao) {
     val allAchievements: Flow<List<Achievement>> = achievementDao.getAllAchievements()
@@ -20,7 +21,7 @@ class AchievementRepository(private val achievementDao: AchievementDao) {
      * Logic to check and unlock achievements based on expense count.
      */
     suspend fun checkAchievements(db: AppDatabase) {
-        val count = db.expenseDao().getExpenseCount()
+        val count = db.expenseDao().getExpenseCount().first()
 
         if (count >= 1) db.achievementDao().unlockAchievement("Beginner Saver")
         if (count >= 5) db.achievementDao().unlockAchievement("Bronze Tracker")

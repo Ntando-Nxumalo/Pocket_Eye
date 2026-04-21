@@ -12,7 +12,9 @@ object DatabaseProvider {
                 context.applicationContext,
                 AppDatabase::class.java,
                 "expense_database"
-            ).build()
+            )
+            .fallbackToDestructiveMigration() // Added to handle schema changes easily during development
+            .build()
         }
         return instance!!
     }

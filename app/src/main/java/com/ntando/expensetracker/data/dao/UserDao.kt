@@ -16,6 +16,9 @@ interface UserDao {
     @Query("SELECT * FROM users LIMIT 1")
     fun getUser(): Flow<User?>
 
+    @Query("SELECT * FROM users WHERE name = :name")
+    suspend fun getUserByName(name: String): User?
+
     @Query("SELECT * FROM users WHERE email = :email")
     suspend fun getUserByEmail(email: String): User?
 

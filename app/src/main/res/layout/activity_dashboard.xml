@@ -1,198 +1,251 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F5F5">
 
-    <LinearLayout
+    <!-- Green Header -->
+    <View
+        android:id="@+id/headerBackground"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="250dp"
+        android:background="#66BB6A"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- HEADER -->
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="16dp"
+        android:src="@drawable/logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/appName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="PocketEye"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/logo"
+        app:layout_constraintStart_toEndOf="@id/logo"
+        app:layout_constraintTop_toTopOf="@id/logo" />
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#A5D6A7"
+        android:text="Logout"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@id/logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/logo" />
+
+    <TextView
+        android:id="@+id/balanceLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Current Balance"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appName" />
+
+    <TextView
+        android:id="@+id/tvBalance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="R0.00"
+        android:textColor="@android:color/white"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/balanceLabel" />
+
+    <!-- Progress / XP -->
+    <ProgressBar
+        android:id="@+id/progressLevel"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:progress="0"
+        android:progressTint="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvBalance" />
+
+    <TextView
+        android:id="@+id/tvXP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="0 XP"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@id/progressLevel"
+        app:layout_constraintTop_toBottomOf="@id/progressLevel" />
+
+    <!-- Main Content Area (Cards) -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvXP">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="230dp"
-            android:background="#66BB6A"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Top Row -->
-            <LinearLayout
+            <!-- Savings Goals Card -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/logo" />
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginStart="10dp">
+                    android:padding="16dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="PocketEye"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"/>
+                        android:text="Savings Goals"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="1:44"
-                        android:textColor="@android:color/white"
-                        android:textSize="12sp"/>
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal">
+
+                        <!-- Vacation Goal -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Vacation" />
+
+                            <ProgressBar
+                                android:id="@+id/progressGoal1"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:layout_width="80dp"
+                                android:layout_height="8dp"
+                                android:layout_marginTop="4dp" />
+
+                            <TextView
+                                android:id="@+id/tvGoal1Percent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0%"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <!-- Car Goal -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Car" />
+
+                            <ProgressBar
+                                android:id="@+id/progressGoal2"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:layout_width="80dp"
+                                android:layout_height="8dp"
+                                android:layout_marginTop="4dp" />
+
+                            <TextView
+                                android:id="@+id/tvGoal2Percent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0%"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                <Button
-                    android:id="@+id/btnLogout"
-                    android:layout_width="80dp"
-                    android:layout_height="35dp"
-                    android:text="Logout"
-                    android:backgroundTint="#A5D6A7"/>
-            </LinearLayout>
-
-            <!-- Balance -->
-            <TextView
+            <!-- Spending Breakdown Card -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Current Balance"
-                android:textColor="@android:color/white"
-                android:gravity="center"
-                android:layout_marginTop="20dp"/>
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
 
-            <TextView
-                android:id="@+id/tvBalance"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="R0.00"
-                android:textSize="32sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/white"
-                android:gravity="center"/>
-
-            <ProgressBar
-                android:id="@+id/progressLevel"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="12dp"
-                android:layout_marginTop="10dp"/>
-
-            <TextView
-                android:id="@+id/tvXP"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0 XP"
-                android:textColor="@android:color/white"
-                android:textSize="12sp"/>
-        </LinearLayout>
-
-        <!-- SAVINGS GOALS -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@drawable/bg_card"
-            android:padding="16dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Savings Goals"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="15dp">
-
-                <!-- Goal 1 -->
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:orientation="vertical"
-                    android:gravity="center">
-
-                    <ProgressBar
-                        android:id="@+id/progressGoal1"
-                        style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="100dp"
-                        android:layout_height="10dp"/>
+                    android:padding="16dp">
 
                     <TextView
-                        android:id="@+id/tvGoal1Percent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0%"/>
+                        android:text="Spending Breakdown"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tvGoal1"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tvFood"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Vacation"/>
+                        android:layout_marginTop="12dp"
+                        android:text="Food: R0.00" />
+
+                    <TextView
+                        android:id="@+id/tvShopping"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Shopping: R0.00" />
+
+                    <TextView
+                        android:id="@+id/tvBills"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Bills: R0.00" />
+
+                    <TextView
+                        android:id="@+id/tvTransport"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Transport: R0.00" />
                 </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                <!-- Goal 2 -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
-
-                    <ProgressBar
-                        android:id="@+id/progressGoal2"
-                        style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="100dp"
-                        android:layout_height="10dp"/>
-
-                    <TextView
-                        android:id="@+id/tvGoal2Percent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0%"/>
-
-                    <TextView
-                        android:id="@+id/tvGoal2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Car"/>
-                </LinearLayout>
-
-            </LinearLayout>
         </LinearLayout>
+    </ScrollView>
 
-        <!-- SPENDING -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@drawable/bg_card"
-            android:padding="16dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Spending Breakdown"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
-
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/tvFood"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/tvShopping"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/tvBills"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/tvTransport"/>
-        </LinearLayout>
-
-    </LinearLayout>
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

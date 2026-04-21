@@ -1,6 +1,7 @@
 package com.ntando.expensetracker.data.repository
 
 import com.ntando.expensetracker.data.dao.CategoryDao
+import com.ntando.expensetracker.data.dao.CategorySummary
 import com.ntando.expensetracker.data.dao.ExpenseDao
 import com.ntando.expensetracker.data.entity.Category
 import com.ntando.expensetracker.data.entity.Expense
@@ -12,6 +13,8 @@ class ExpenseRepository(
 ) {
     val allExpenses: Flow<List<Expense>> = expenseDao.getAllExpenses()
     val allCategories: Flow<List<Category>> = categoryDao.getAllCategories()
+    val totalSpending: Flow<Double?> = expenseDao.getTotalSpending()
+    val categorySummary: Flow<List<CategorySummary>> = expenseDao.getCategorySummary()
 
     suspend fun insertExpense(expense: Expense) {
         expenseDao.insertExpense(expense)
