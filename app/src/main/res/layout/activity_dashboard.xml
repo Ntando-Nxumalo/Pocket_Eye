@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="#F5F5F5"
+    android:orientation="vertical">
 
     <!-- Green Header -->
     <View
@@ -244,6 +245,47 @@
                         android:text="Transport: R0.00" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+            <!-- Bottom Navigation Buttons -->
+            <LinearLayout
+                android:id="@+id/bottomNav"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:background="#0D2B45">
+
+                <Button
+                    android:id="@+id/btnAddExpense"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Add Expense"
+                    android:backgroundTint="#66BB6A"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"/>
+
+                <Button
+                    android:id="@+id/btnGoals"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Goals"
+                    android:backgroundTint="#FDD835"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"/>
+
+                <Button
+                    android:id="@+id/btnReports"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Reports"
+                    android:backgroundTint="#E0E0E0"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"/>
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
