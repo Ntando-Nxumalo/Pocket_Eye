@@ -5,125 +5,125 @@
     android:padding="16dp">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:spacing="12dp">
 
         <!-- Header -->
         <TextView
             android:id="@+id/tvTitle"
-            android:text="Set Goals"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
-            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/btn_gradient"
+            android:gravity="center"
             android:padding="12dp"
-            android:layout_marginBottom="8dp"/>
+            android:text="Set Goals"
+            android:textColor="@android:color/black"
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvSubtitle"
-            android:text="Plan your monthly budget"
-            android:textSize="16sp"
-            android:textColor="@android:color/darker_gray"
-            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"/>
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:text="Plan your monthly budget"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="16sp" />
 
         <!-- Section -->
         <TextView
             android:id="@+id/tvSection"
-            android:text="Monthly Budget Goals"
-            android:textSize="18sp"
-            android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"/>
+            android:layout_marginBottom="6dp"
+            android:text="Monthly Budget Goals"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvSectionDesc"
-            android:text="Set minimum and maximum spending limits to track your financial progress"
-            android:textSize="14sp"
-            android:textColor="@android:color/darker_gray"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="20dp"
+            android:text="Set minimum and maximum spending limits to track your financial progress"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp" />
 
         <!-- Minimum Goal -->
         <TextView
-            android:text="Minimum Monthly Goal"
-            android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"/>
+            android:layout_marginBottom="6dp"
+            android:text="Minimum Monthly Goal"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/etMinGoal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@android:drawable/edit_text"
             android:hint="R 0.00"
             android:inputType="numberDecimal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/edit_text"
-            android:padding="10dp"
-            android:layout_marginBottom="8dp"/>
+            android:padding="10dp" />
 
         <TextView
-            android:text="Minimum amount to save each month"
-            android:textSize="12sp"
-            android:textColor="@android:color/darker_gray"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="20dp"
+            android:text="Minimum amount to save each month"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="12sp" />
 
         <!-- Maximum Goal -->
         <TextView
-            android:text="Maximum Monthly Goal"
-            android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"/>
+            android:layout_marginBottom="6dp"
+            android:text="Maximum Monthly Goal"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/etMaxGoal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@android:drawable/edit_text"
             android:hint="R 0.00"
             android:inputType="numberDecimal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/edit_text"
-            android:padding="10dp"
-            android:layout_marginBottom="8dp"/>
+            android:padding="10dp" />
 
         <TextView
-            android:text="Maximum spending limit for the month"
-            android:textSize="12sp"
-            android:textColor="@android:color/darker_gray"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="28dp"/>
+            android:layout_marginBottom="28dp"
+            android:text="Maximum spending limit for the month"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="12sp" />
 
         <!-- Buttons -->
         <Button
             android:id="@+id/btnSaveGoals"
-            android:text="Save Goals"
-            android:textColor="@android:color/white"
-            android:background="@drawable/btn_gradient"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:padding="12dp"/>
+            android:background="@drawable/btn_gradient"
+            android:padding="12dp"
+            android:text="Save Goals"
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/btnBackDashboard"
-            android:text="Back to Dashboard"
-            android:backgroundTint="@android:color/white"
-            android:textColor="@android:color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="12dp"/>
+            android:backgroundTint="@android:color/white"
+            android:padding="12dp"
+            android:text="Back to Dashboard"
+            android:textColor="@android:color/black" />
 
     </LinearLayout>
 </ScrollView>
