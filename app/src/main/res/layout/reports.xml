@@ -1,111 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp">
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:orientation="vertical"
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="20dp">
 
-        <!-- Title -->
-        <TextView
-            android:id="@+id/tvTitle"
-            android:text="Expense Report"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"/>
-
-        <!-- Line Chart Placeholder -->
-        <ImageView
-            android:id="@+id/imgLineChart"
-            android:src="@android:drawable/ic_menu_sort_by_size"
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:scaleType="centerInside"
-            android:layout_marginBottom="24dp"/>
-
-        <!-- Filters -->
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp">
-
-            <Spinner
-                android:id="@+id/spCategory"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="8dp"/>
-
-            <Spinner
-                android:id="@+id/spTimePeriod"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="12dp"
-                android:padding="8dp"/>
-        </LinearLayout>
-
-        <!-- Summary Boxes -->
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp">
+            android:layout_height="wrap_content">
 
+            <!-- Title -->
             <TextView
-                android:id="@+id/tvTotalExpenses"
-                android:text="Total Expenses: R5,280 (Last 3 months)"
-                android:textSize="18sp"
+                android:id="@+id/tvTitle"
+                android:text="Expense Report"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"/>
+                android:layout_marginBottom="24dp"/>
 
-            <TextView
-                android:id="@+id/tvAverageMonth"
-                android:text="Average/Month: R1,093 (Last 3 months)"
-                android:textSize="18sp"
+            <!-- Line Chart-->
+            <ImageView
+                android:id="@+id/imgLineChart"
+                android:src="@android:drawable/ic_menu_sort_by_size"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:scaleType="centerInside"
+                android:layout_marginBottom="24dp"/>
+
+            <!-- Filters -->
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"/>
+                android:layout_marginBottom="24dp">
 
-            <TextView
-                android:id="@+id/tvHighestExpense"
-                android:text="Highest Expense: R1,200 (January)"
-                android:textSize="18sp"
+                <Spinner
+                    android:id="@+id/spCategory"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="8dp"/>
+
+                <Spinner
+                    android:id="@+id/spTimePeriod"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="12dp"
+                    android:padding="8dp"/>
+            </LinearLayout>
+
+            <!-- Summary -->
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"/>
+                android:layout_marginBottom="32dp">
 
-            <TextView
-                android:id="@+id/tvLowestExpense"
-                android:text="Lowest Expense: R850 (April)"
-                android:textSize="18sp"
+                <TextView
+                    android:id="@+id/tvTotalExpenses"
+                    android:text="Total Expenses: R5,280 (Last 3 months)"
+                    android:textSize="18sp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/tvAverageMonth"
+                    android:text="Average/Month: R1,093 (Last 3 months)"
+                    android:textSize="18sp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/tvHighestExpense"
+                    android:text="Highest Expense: R1,200 (January)"
+                    android:textSize="18sp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/tvLowestExpense"
+                    android:text="Lowest Expense: R850 (April)"
+                    android:textSize="18sp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <!-- Export Button -->
+            <Button
+                android:id="@+id/btnExport"
+                android:text="Export"
+                android:background="@drawable/btn_gradient"
+                android:textColor="@android:color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"/>
+                android:padding="14dp"/>
+
         </LinearLayout>
+    </ScrollView>
 
-        <!-- Spacer to push button down -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+    <LinearLayout
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:background="#0D2B45">
 
-        <!-- Export Button -->
         <Button
-            android:id="@+id/btnExport"
-            android:text="Export"
-            android:background="@drawable/btn_gradient"
+            android:id="@+id/btnAddExpense"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Add Expense"
+            android:backgroundTint="#66BB6A"
             android:textColor="@android:color/white"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="14dp"/>
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/btnGoals"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Goals"
+            android:backgroundTint="#FDD835"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/btnReports"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Reports"
+            android:backgroundTint="#E0E0E0"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"/>
     </LinearLayout>
-</ScrollView>
+
+</LinearLayout>
