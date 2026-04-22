@@ -1,5 +1,6 @@
 package com.ntando.expensetracker
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -15,7 +16,9 @@ class SetGoalsActivity : AppCompatActivity() {
         val etMinGoal = findViewById<EditText>(R.id.etMinGoal)
         val etMaxGoal = findViewById<EditText>(R.id.etMaxGoal)
         val btnSaveGoals = findViewById<Button>(R.id.btnSaveGoals)
-        val btnBackDashboard = findViewById<Button>(R.id.btnBackDashboard)
+
+        // Setup Navigation Bar
+        setupNavigation()
 
         btnSaveGoals.setOnClickListener {
             val minGoal = etMinGoal.text.toString()
@@ -27,9 +30,19 @@ class SetGoalsActivity : AppCompatActivity() {
                 Toast.makeText(this, "Goals saved: Min R$minGoal, Max R$maxGoal", Toast.LENGTH_LONG).show()
             }
         }
+    }
 
-        btnBackDashboard.setOnClickListener {
-            finish() // closes this activity and returns to previous screen
+    private fun setupNavigation() {
+        findViewById<android.view.View>(R.id.btnAddExpense)?.setOnClickListener {
+            startActivity(Intent(this, AddExpenseActivity::class.java))
+            finish()
+        }
+        findViewById<android.view.View>(R.id.btnGoals)?.setOnClickListener {
+            // Already here
+        }
+        findViewById<android.view.View>(R.id.btnReports)?.setOnClickListener {
+            startActivity(Intent(this, ReportsActivity::class.java))
+            finish()
         }
     }
 }

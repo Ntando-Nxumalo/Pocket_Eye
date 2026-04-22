@@ -18,11 +18,14 @@ interface ExpenseDao {
     @Delete
     suspend fun deleteExpense(expense: Expense)
 
+    @Query("SELECT * FROM expenses ORDER BY date DESC LIMIT 10")
+    fun getRecentExpenses(): Flow<List<Expense>>
+
     @Query("SELECT * FROM expenses")
     fun getAllExpenses(): Flow<List<Expense>>
 
     @Query("SELECT SUM(amount) FROM expenses")
-    fun getTotalSpending(): Flow<Double?>
+    fun getTotalSpendingFlow(): Flow<Double?>
 
     @Query("SELECT categoryId, SUM(amount) as totalAmount FROM expenses GROUP BY categoryId")
     fun getCategorySummary(): Flow<List<CategorySummary>>

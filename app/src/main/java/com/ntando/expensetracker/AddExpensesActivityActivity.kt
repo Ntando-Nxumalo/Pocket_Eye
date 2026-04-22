@@ -1,5 +1,6 @@
 package com.ntando.expensetracker
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +22,9 @@ class AddExpenseActivity : AppCompatActivity() {
         val etNote = findViewById<EditText>(R.id.etNote)
         val btnSave = findViewById<Button>(R.id.btnSave)
         val btnCancel = findViewById<Button>(R.id.btnCancel)
+
+        // Setup Navigation Bar
+        setupNavigation()
 
         // Categories for dropdown
         val categories = listOf("Food", "Shopping", "Bills", "Transport", "Other")
@@ -70,5 +74,21 @@ class AddExpenseActivity : AppCompatActivity() {
         btnCancel.setOnClickListener {
             finish()
         }
+    }
+
+    private fun setupNavigation() {
+        findViewById<android.view.View>(R.id.btnAddExpense)?.setOnClickListener {
+            // Already here, maybe refresh or do nothing
+        }
+        findViewById<android.view.View>(R.id.btnGoals)?.setOnClickListener {
+            startActivity(Intent(this, SetGoalsActivity::class.java))
+            finish()
+        }
+        findViewById<android.view.View>(R.id.btnReports)?.setOnClickListener {
+            startActivity(Intent(this, ReportsActivity::class.java))
+            finish()
+        }
+        // Add Dashboard link if needed, but usually clicking logo or back works.
+        // Or you can add a dashboard button to the nav bar if desired.
     }
 }

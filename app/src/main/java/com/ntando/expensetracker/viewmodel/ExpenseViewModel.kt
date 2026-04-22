@@ -20,6 +20,12 @@ class ExpenseViewModel(private val repository: ExpenseRepository) : ViewModel() 
         initialValue = emptyList()
     )
 
+    val recentExpenses: StateFlow<List<Expense>> = repository.recentExpenses.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
+
     val categories: StateFlow<List<Category>> = repository.allCategories.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),

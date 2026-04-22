@@ -13,8 +13,9 @@ class ExpenseRepository(
 ) {
     val allExpenses: Flow<List<Expense>> = expenseDao.getAllExpenses()
     val allCategories: Flow<List<Category>> = categoryDao.getAllCategories()
-    val totalSpending: Flow<Double?> = expenseDao.getTotalSpending()
+    val totalSpending: Flow<Double?> = expenseDao.getTotalSpendingFlow()
     val categorySummary: Flow<List<CategorySummary>> = expenseDao.getCategorySummary()
+    val recentExpenses: Flow<List<Expense>> = expenseDao.getRecentExpenses()
 
     suspend fun insertExpense(expense: Expense) {
         expenseDao.insertExpense(expense)
