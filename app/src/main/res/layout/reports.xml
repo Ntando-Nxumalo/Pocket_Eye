@@ -10,7 +10,7 @@
         android:id="@+id/reportsHeader"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:background="#0D2B45"
+        android:background="#66BB6A"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -161,7 +161,7 @@
                             android:id="@+id/tvTotalExpensesAmount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="R5,280"
+                            android:text="R0.00"
                             android:textColor="#EF5350"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -198,7 +198,7 @@
                             android:id="@+id/tvAverageMonthAmount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="R1,093"
+                            android:text="R0.00"
                             android:textColor="#42A5F5"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -235,7 +235,7 @@
                             android:id="@+id/tvHighestExpenseAmount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="R1,200"
+                            android:text="R0.00"
                             android:textColor="#0D2B45"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -244,7 +244,7 @@
                             android:id="@+id/tvHighestMonth"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="January"
+                            android:text="---"
                             android:textSize="10sp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -273,7 +273,7 @@
                             android:id="@+id/tvLowestExpenseAmount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="R850"
+                            android:text="R0.00"
                             android:textColor="#66BB6A"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -282,7 +282,7 @@
                             android:id="@+id/tvLowestMonth"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="April"
+                            android:text="---"
                             android:textSize="10sp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -294,7 +294,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="16dp"
-                android:backgroundTint="#66BB6A"
+                android:backgroundTint="#0D2B45"
                 android:text="Export"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"

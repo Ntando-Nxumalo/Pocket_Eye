@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 data class Goal(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val minGoal: Double,
-    val maxGoal: Double
+    val name: String,
+    val targetAmount: Double,
+    val currentAmount: Double = 0.0
 )

@@ -46,21 +46,38 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Monthly Budget Goals"
+                        android:text="New Savings Goal"
                         android:textColor="#0D2B45"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
-                    <!-- Minimum Goal -->
+                    <!-- Goal Name -->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="Minimum Monthly Goal"
+                        android:text="Goal Name"
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/etMinGoal"
+                        android:id="@+id/etGoalName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:drawable/edit_text"
+                        android:hint="e.g. Dream House"
+                        android:inputType="text"
+                        android:padding="12dp" />
+
+                    <!-- Target Amount -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Target Amount"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etTargetAmount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:drawable/edit_text"
@@ -68,16 +85,16 @@
                         android:inputType="numberDecimal"
                         android:padding="12dp" />
 
-                    <!-- Maximum Goal -->
+                    <!-- Current Amount -->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="Maximum Monthly Goal"
+                        android:text="Amount Already Saved"
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/etMaxGoal"
+                        android:id="@+id/etCurrentAmount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:drawable/edit_text"
@@ -92,7 +109,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
                         android:backgroundTint="#66BB6A"
-                        android:text="Save Goals"
+                        android:text="Add Goal"
                         android:textColor="@android:color/white" />
 
                 </LinearLayout>

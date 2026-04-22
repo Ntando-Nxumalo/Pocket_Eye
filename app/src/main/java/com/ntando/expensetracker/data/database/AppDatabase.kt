@@ -14,7 +14,7 @@ import com.ntando.expensetracker.data.entity.*
         Achievement::class,
         CurrencyRate::class
     ],
-    version = 2 // Increased version number to fix schema mismatch crash
+    version = 3 // Increased version to 3 to reflect User entity change
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao

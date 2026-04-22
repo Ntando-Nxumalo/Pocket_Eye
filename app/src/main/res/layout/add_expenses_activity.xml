@@ -33,7 +33,7 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp">
 
@@ -43,10 +43,86 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
+                    <!-- Date -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Date"
+                        android:textColor="#0D2B45"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:drawable/edit_text"
+                        android:focusable="false"
+                        android:hint="Select Date"
+                        android:padding="12dp" />
+
+                    <!-- Times -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Start Time"
+                                android:textColor="#0D2B45"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/etStartTime"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@android:drawable/edit_text"
+                                android:focusable="false"
+                                android:hint="Start Time"
+                                android:padding="12dp" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="16dp"
+                            android:layout_height="1dp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="End Time"
+                                android:textColor="#0D2B45"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/etEndTime"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@android:drawable/edit_text"
+                                android:focusable="false"
+                                android:hint="End Time"
+                                android:padding="12dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
                     <!-- Amount -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
                         android:text="Amount"
                         android:textColor="#0D2B45"
                         android:textStyle="bold" />
@@ -64,7 +140,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="12dp"
                         android:text="Category"
                         android:textColor="#0D2B45"
                         android:textStyle="bold" />
@@ -75,12 +151,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp" />
 
-                    <!-- Note -->
+                    <!-- Description -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="Note"
+                        android:layout_marginTop="12dp"
+                        android:text="Description"
                         android:textColor="#0D2B45"
                         android:textStyle="bold" />
 
@@ -89,10 +165,35 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:drawable/edit_text"
-                        android:hint="Add a note..."
+                        android:hint="Add a description..."
                         android:padding="12dp" />
 
-                    <!-- Buttons -->
+                    <!-- Photo -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Add Photo (Optional)"
+                        android:textColor="#0D2B45"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnAddPhoto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#0D2B45"
+                        android:text="Choose Image"
+                        android:textColor="@android:color/white" />
+
+                    <ImageView
+                        android:id="@+id/ivExpensePhoto"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="8dp"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone" />
+
+                    <!-- Save/Cancel Buttons -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

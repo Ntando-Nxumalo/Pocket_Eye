@@ -28,6 +28,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.ntando.expensetracker.data.dao.CategorySummary
 import com.ntando.expensetracker.data.database.DatabaseProvider
+import com.ntando.expensetracker.data.entity.Goal
 import com.ntando.expensetracker.data.repository.ExpenseRepository
 import com.ntando.expensetracker.viewmodel.ExpenseViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -41,7 +42,7 @@ class Dashboard : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
-        // Initialize ViewModel properly
+        // Initialize ViewModel
         val db = DatabaseProvider.getDatabase(this)
         val repository = ExpenseRepository(db.expenseDao(), db.categoryDao())
         val factory = object : ViewModelProvider.Factory {
@@ -58,7 +59,7 @@ class Dashboard : AppCompatActivity() {
         val btnLogout = findViewById<LinearLayout>(R.id.btnLogout)
         val llRecentTransactions = findViewById<LinearLayout>(R.id.llRecentTransactions)
         
-        // Navigation Buttons
+        // Navigation
         val btnAddExpense = findViewById<View>(R.id.btnAddExpense)
         val btnGoals = findViewById<View>(R.id.btnGoals)
         val btnReports = findViewById<View>(R.id.btnReports)
@@ -79,22 +80,32 @@ class Dashboard : AppCompatActivity() {
             startActivity(Intent(this, ReportsActivity::class.java))
         }
 
-        // Setup Charts with Live Data
-        setupCharts()
+        // Setup Charts
+        setupCharts(db)
 
-        // Observe Data from ViewModel for real-time updates
+        // Observe ViewModel
         observeViewModel(tvBalance, progressLevel, tvXP, llRecentTransactions)
     }
 
-    private fun setupCharts() {
+    private fun setupCharts(db: com.ntando.expensetracker.data.database.AppDatabase) {
         findViewById<ComposeView>(R.id.cvGoalsCharts).setContent {
+            val goals by db.goalDao().getTopGoals().collectAsState(initial = emptyList())
+            
             Row(
                 modifier = Modifier.fillMaxSize(),
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                GoalChart(percentage = 0.6f, label = "Vacation", color = androidx.compose.ui.graphics.Color(0xFF66BB6A))
-                GoalChart(percentage = 0.35f, label = "New Car", color = androidx.compose.ui.graphics.Color(0xFFFFD54F))
+                if (goals.isEmpty()) {
+                    GoalChart(percentage = 0.6f, label = "Vacation", color = androidx.compose.ui.graphics.Color(0xFF66BB6A))
+                    GoalChart(percentage = 0.35f, label = "New Car", color = androidx.compose.ui.graphics.Color(0xFFFFD54F))
+                } else {
+                    goals.forEachIndexed { index, goal ->
+                        val progress = if (goal.targetAmount > 0) (goal.currentAmount / goal.targetAmount).toFloat().coerceIn(0f, 1f) else 0f
+                        val color = if (index == 0) androidx.compose.ui.graphics.Color(0xFF66BB6A) else androidx.compose.ui.graphics.Color(0xFFFFD54F)
+                        GoalChart(percentage = progress, label = goal.name, color = color)
+                    }
+                }
             }
         }
 
@@ -111,14 +122,12 @@ class Dashboard : AppCompatActivity() {
         tvXP: TextView,
         llRecentTransactions: LinearLayout
     ) {
-        // Observe Balance
         lifecycleScope.launch {
             viewModel.totalSpending.collect { total ->
                 tvBalance.text = "R%.2f".format(total)
             }
         }
 
-        // Observe XP
         lifecycleScope.launch {
             viewModel.recentExpenses.collect { expenses ->
                 val count = expenses.size
@@ -129,13 +138,11 @@ class Dashboard : AppCompatActivity() {
             }
         }
 
-        // Observe Recent Transactions
         lifecycleScope.launch {
             viewModel.recentExpenses.collectLatest { expenses ->
                 llRecentTransactions.removeAllViews()
                 expenses.forEach { expense ->
-                    val transactionView = createTransactionView(expense)
-                    llRecentTransactions.addView(transactionView)
+                    llRecentTransactions.addView(createTransactionView(expense))
                 }
             }
         }
@@ -211,7 +218,7 @@ fun GoalChart(percentage: Float, label: String, color: androidx.compose.ui.graph
             }
             Text(text = "${(percentage * 100).toInt()}%", fontSize = 14.sp, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
         }
-        Text(text = label, modifier = Modifier.padding(top = 8.dp), fontSize = 12.sp)
+        Text(text = label, modifier = Modifier.padding(top = 8.dp), fontSize = 12.sp, maxLines = 1)
     }
 }
 
