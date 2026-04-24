@@ -26,5 +26,5 @@ data class Expense(
     val date: String,
     val startTime: String,
     val endTime: String,
-    val photoPath: String?
+    val photoPath: String? = null
 )

@@ -3,13 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="@android:color/white">
+
+    <!-- Extended Green Header Background -->
+    <View
+        android:id="@+id/headerBackgroundExtended"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@drawable/header_rounded_bottom"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/headerInclude"
+        layout="@layout/common_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavContainer"
-        app:layout_constraintTop_toTopOf="parent">
+        android:clipToPadding="false"
+        android:paddingBottom="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerInclude">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -17,31 +34,19 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Header -->
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/header_rounded_bottom"
-                android:gravity="center"
-                android:padding="24dp"
-                android:text="Set Goals"
-                android:textColor="@android:color/white"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp">
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="20dp">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -57,16 +62,19 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="Goal Name"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textColor="#0D2B45" />
 
                     <EditText
                         android:id="@+id/etGoalName"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:drawable/edit_text"
+                        android:layout_height="56dp"
+                        android:background="@drawable/rounded_edittext"
                         android:hint="e.g. Dream House"
                         android:inputType="text"
-                        android:padding="12dp" />
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="#78909C" />
 
                     <!-- Target Amount -->
                     <TextView
@@ -74,16 +82,79 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="Target Amount"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textColor="#0D2B45" />
 
                     <EditText
                         android:id="@+id/etTargetAmount"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:drawable/edit_text"
+                        android:layout_height="56dp"
+                        android:background="@drawable/rounded_edittext"
                         android:hint="R 0.00"
                         android:inputType="numberDecimal"
-                        android:padding="12dp" />
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="#78909C" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp"
+                        android:baselineAligned="false">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginEnd="8dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Min Target"
+                                android:textStyle="bold"
+                                android:textColor="#0D2B45" />
+
+                            <EditText
+                                android:id="@+id/etMinTargetAmount"
+                                android:layout_width="match_parent"
+                                android:layout_height="56dp"
+                                android:background="@drawable/rounded_edittext"
+                                android:hint="R 0.00"
+                                android:inputType="numberDecimal"
+                                android:padding="12dp"
+                                android:textColor="@android:color/black"
+                                android:textColorHint="#78909C" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="8dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Max Target"
+                                android:textStyle="bold"
+                                android:textColor="#0D2B45" />
+
+                            <EditText
+                                android:id="@+id/etMaxTargetAmount"
+                                android:layout_width="match_parent"
+                                android:layout_height="56dp"
+                                android:background="@drawable/rounded_edittext"
+                                android:hint="R 0.00"
+                                android:inputType="numberDecimal"
+                                android:padding="12dp"
+                                android:textColor="@android:color/black"
+                                android:textColorHint="#78909C" />
+                        </LinearLayout>
+                    </LinearLayout>
 
                     <!-- Current Amount -->
                     <TextView
@@ -91,26 +162,32 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="Amount Already Saved"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textColor="#0D2B45" />
 
                     <EditText
                         android:id="@+id/etCurrentAmount"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:drawable/edit_text"
+                        android:layout_height="56dp"
+                        android:background="@drawable/rounded_edittext"
                         android:hint="R 0.00"
                         android:inputType="numberDecimal"
-                        android:padding="12dp" />
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="#78909C" />
 
                     <!-- Save Button -->
                     <Button
                         android:id="@+id/btnSaveGoals"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="56dp"
                         android:layout_marginTop="24dp"
+                        android:background="@drawable/rounded_button"
                         android:backgroundTint="#66BB6A"
                         android:text="Add Goal"
-                        android:textColor="@android:color/white" />
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:textAllCaps="false" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

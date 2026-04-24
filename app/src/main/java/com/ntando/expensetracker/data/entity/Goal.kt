@@ -9,5 +9,7 @@ data class Goal(
     val id: Int = 0,
     val name: String,
     val targetAmount: Double,
+    val minTargetAmount: Double = 0.0,
+    val maxTargetAmount: Double = 0.0,
     val currentAmount: Double = 0.0
 )

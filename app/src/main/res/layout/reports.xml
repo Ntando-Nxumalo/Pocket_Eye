@@ -3,39 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="@android:color/white">
 
-    <!-- Header -->
+    <!-- Extended Green Header Background -->
     <View
-        android:id="@+id/reportsHeader"
+        android:id="@+id/headerBackgroundExtended"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="#66BB6A"
+        android:layout_height="180dp"
+        android:background="@drawable/header_rounded_bottom"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/btnBack"
-        android:layout_width="wrap_content"
+    <include
+        android:id="@+id/headerInclude"
+        layout="@layout/common_header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:padding="8dp"
-        android:src="@android:drawable/ic_menu_revert"
-        app:layout_constraintBottom_toBottomOf="@id/reportsHeader"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/reportsHeader"
-        app:tint="@android:color/white" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="Reports"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/reportsHeader"
-        app:layout_constraintStart_toEndOf="@id/btnBack"
-        app:layout_constraintTop_toTopOf="@id/reportsHeader" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -43,7 +26,7 @@
         android:clipToPadding="false"
         android:paddingBottom="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/reportsHeader">
+        app:layout_constraintTop_toBottomOf="@id/headerInclude">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -55,15 +38,17 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp">
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="20dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -95,13 +80,17 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Category"
+                                android:textColor="#0D2B45"
+                                android:textStyle="bold"
                                 android:textSize="12sp" />
 
                             <Spinner
                                 android:id="@+id/spCategoryReport"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@android:drawable/btn_dropdown" />
+                                android:layout_height="48dp"
+                                android:background="@drawable/rounded_edittext"
+                                android:popupBackground="@android:color/white"
+                                android:spinnerMode="dropdown" />
                         </LinearLayout>
 
                         <View
@@ -118,13 +107,17 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Time Period"
+                                android:textColor="#0D2B45"
+                                android:textStyle="bold"
                                 android:textSize="12sp" />
 
                             <Spinner
                                 android:id="@+id/spTimePeriodReport"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@android:drawable/btn_dropdown" />
+                                android:layout_height="48dp"
+                                android:background="@drawable/rounded_edittext"
+                                android:popupBackground="@android:color/white"
+                                android:spinnerMode="dropdown" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -143,7 +136,9 @@
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
                     android:layout_margin="4dp"
-                    app:cardCornerRadius="12dp">
+                    app:cardBackgroundColor="@android:color/white"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="6dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -155,6 +150,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Total Expenses"
+                            android:textColor="#0D2B45"
+                            android:textStyle="bold"
                             android:textSize="11sp" />
 
                         <TextView
@@ -169,7 +166,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Last 3 months"
+                            android:text="Selected Filter"
+                            android:textColor="#546E7A"
                             android:textSize="10sp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -180,7 +178,9 @@
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
                     android:layout_margin="4dp"
-                    app:cardCornerRadius="12dp">
+                    app:cardBackgroundColor="@android:color/white"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="6dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -192,6 +192,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Average/Month"
+                            android:textColor="#0D2B45"
+                            android:textStyle="bold"
                             android:textSize="11sp" />
 
                         <TextView
@@ -206,7 +208,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Last 3 months"
+                            android:text="Based on period"
+                            android:textColor="#546E7A"
                             android:textSize="10sp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -217,7 +220,9 @@
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
                     android:layout_margin="4dp"
-                    app:cardCornerRadius="12dp">
+                    app:cardBackgroundColor="@android:color/white"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="6dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -229,6 +234,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Highest Expense"
+                            android:textColor="#0D2B45"
+                            android:textStyle="bold"
                             android:textSize="11sp" />
 
                         <TextView
@@ -245,6 +252,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="---"
+                            android:textColor="#546E7A"
                             android:textSize="10sp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -255,7 +263,9 @@
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
                     android:layout_margin="4dp"
-                    app:cardCornerRadius="12dp">
+                    app:cardBackgroundColor="@android:color/white"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="6dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -267,6 +277,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Lowest Expense"
+                            android:textColor="#0D2B45"
+                            android:textStyle="bold"
                             android:textSize="11sp" />
 
                         <TextView
@@ -283,6 +295,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="---"
+                            android:textColor="#546E7A"
                             android:textSize="10sp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -294,14 +307,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="16dp"
+                android:background="@drawable/rounded_button"
                 android:backgroundTint="#0D2B45"
-                android:text="Export"
+                android:text="Export PDF"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
-                app:icon="@android:drawable/ic_menu_save"
-                app:iconGravity="textStart"
-                app:iconPadding="8dp" />
+                android:textStyle="bold" />
 
         </LinearLayout>
     </ScrollView>

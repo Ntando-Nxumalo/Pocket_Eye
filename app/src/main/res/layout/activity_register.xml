@@ -1,122 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_gradient">
+    android:background="@android:color/white">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:padding="20dp">
+        android:layout_height="match_parent">
 
-        <!-- Logo -->
-        <ImageView
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:src="@drawable/logo"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="10dp"/>
-
-        <!-- Title -->
-        <TextView
-            android:text="Create Account"
-            android:textColor="@android:color/black"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="4dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <!-- Subtitle -->
-        <TextView
-            android:text="Join Pocket Eye today"
-            android:textColor="@android:color/black"
-            android:textSize="14sp"
-            android:textStyle="italic"
-            android:layout_marginBottom="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <!-- Card -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:background="@drawable/bg_card"
-            android:padding="20dp"
-            android:layout_marginTop="10dp">
+            android:padding="20dp">
 
-            <!-- Username -->
+            <!-- Logo -->
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="10dp"
+                android:contentDescription="PocketEye Logo"
+                android:src="@drawable/logo" />
+
+            <!-- Title -->
             <TextView
-                android:textColor="@android:color/black"
-                android:text="Username"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="Create Account"
+                android:textColor="#0D2B45"
+                android:textSize="28sp"
+                android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/etUsername"
-                android:hint="Choose a username"
-                android:textColor="@android:color/black"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/input_field"
-                android:layout_marginBottom="10dp"/>
-
-            <!-- Password -->
+            <!-- Subtitle -->
             <TextView
-                android:textColor="@android:color/black"
-                android:text="Password"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:text="Join PocketEye today"
+                android:textColor="#546E7A"
+                android:textSize="14sp" />
 
-            <EditText
-                android:id="@+id/etPassword"
-                android:hint="Create a password"
+            <!-- Card -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:inputType="textPassword"
-                android:background="@drawable/input_field"
-                android:layout_marginBottom="10dp"/>
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp">
 
-            <!-- Confirm Password -->
-            <TextView
-                android:text="Confirm Password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
 
-            <EditText
-                android:id="@+id/etConfirmPassword"
-                android:hint="Confirm your password"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:inputType="textPassword"
-                android:background="@drawable/input_field"
-                android:layout_marginBottom="20dp"/>
+                    <!-- Username -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:text="Username"
+                        android:textColor="#0D2B45"
+                        android:textStyle="bold"
+                        android:textSize="14sp" />
 
-            <!-- Register Button -->
-            <Button
-                android:id="@+id/registerBtn"
-                android:text="Register"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:textColor="@android:color/white"
-                android:background="@drawable/btn_gradient"/>
+                    <EditText
+                        android:id="@+id/etUsername"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="@drawable/rounded_edittext"
+                        android:hint="Choose a username"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="#78909C"
+                        android:padding="12dp" />
 
-            <!-- Login Link -->
-            <TextView
-                android:id="@+id/loginLink"
-                android:text="Already have an account? Login"
-                android:textColor="#6A00F4"
-                android:layout_marginTop="15dp"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                    <!-- Password -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:text="Password"
+                        android:textColor="#0D2B45"
+                        android:textStyle="bold"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/etPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="@drawable/rounded_edittext"
+                        android:hint="Create a password"
+                        android:inputType="textPassword"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="#78909C"
+                        android:padding="12dp" />
+
+                    <!-- Confirm Password -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:text="Confirm Password"
+                        android:textColor="#0D2B45"
+                        android:textStyle="bold"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/etConfirmPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginBottom="24dp"
+                        android:background="@drawable/rounded_edittext"
+                        android:hint="Confirm your password"
+                        android:inputType="textPassword"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="#78909C"
+                        android:padding="12dp" />
+
+                    <!-- Register Button -->
+                    <Button
+                        android:id="@+id/registerBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/rounded_button"
+                        android:backgroundTint="#66BB6A"
+                        android:text="Register"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <!-- Login Link -->
+                    <TextView
+                        android:id="@+id/loginLink"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center"
+                        android:text="Already have an account? Login"
+                        android:textColor="#0D2B45"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 
-    </LinearLayout>
-
-</ScrollView>
-
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
