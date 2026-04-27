@@ -22,18 +22,23 @@ class SplashActivity : AppCompatActivity() {
         val tvAppName = findViewById<TextView>(R.id.tvAppName)
         val pbLoading = findViewById<ProgressBar>(R.id.pbLoading)
 
-        // Load modern animations
+        // Load animations
         val fadeIn = AnimationUtils.loadAnimation(this, android.R.anim.fade_in)
-        val slideUp = AnimationUtils.loadAnimation(this, androidx.appcompat.R.anim.abc_slide_in_bottom)
+        // Using built-in slide animation
+        val slideUp = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left)
         
         ivLogo.startAnimation(fadeIn)
         tvAppName.startAnimation(slideUp)
 
+        // Show progress bar during delay
+        pbLoading.visibility = android.view.View.VISIBLE
+
         // Use Coroutines for a smoother transition
         lifecycleScope.launch {
-            delay(2500) // Slightly longer for a better feel
+            delay(2500)
             val intent = Intent(this@SplashActivity, MainActivity::class.java)
             startActivity(intent)
+            @Suppress("DEPRECATION")
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             finish()
         }
