@@ -133,7 +133,7 @@ Sync Gradle dependencies
 Run the app on an emulator or physical device
 🧪 Testing
 
-The application has been tested for:
+The application has been tested (https://youtu.be/KAfF7iunvRw) for:
 
 User authentication (valid & invalid inputs)
 Expense CRUD operations
