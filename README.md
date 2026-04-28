@@ -127,7 +127,7 @@ com.ntando.expensetracker
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/pocket-eye.git
+   git clone https://github.com/Ntando-Nxumalo/Pocket_Eye
 Open the project in Android Studio
 Sync Gradle dependencies
 Run the app on an emulator or physical device
