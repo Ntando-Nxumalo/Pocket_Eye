@@ -1,5 +1,6 @@
 package com.ntando.expensetracker.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,6 +18,8 @@ class ChatViewModel(
     private val userId: Long
 ) : ViewModel() {
 
+    private val TAG = "ChatViewModel"
+
     private val _messages = MutableLiveData<List<ChatMessage>>(emptyList())
     val messages: LiveData<List<ChatMessage>> = _messages
 
@@ -30,16 +33,20 @@ class ChatViewModel(
 
     fun sendWelcomeMessage() {
         if (_messages.value?.isEmpty() == true) {
+            Log.d(TAG, "Sending initial welcome message to user $userId")
             addMessage(ChatMessage("Hello! I'm your Pocket Eye assistant. How can I help you today?", false))
         }
     }
 
     fun sendMessage(text: String) {
+        Log.i(TAG, "User sent message: $text")
         addMessage(ChatMessage(text, true))
 
         viewModelScope.launch {
+            Log.d(TAG, "Processing bot response for input: $text")
             delay(500) // Natural delay
             val response = getBotResponse(text.lowercase())
+            Log.d(TAG, "Bot response generated: $response")
             addMessage(ChatMessage(response, false))
         }
     }
@@ -52,15 +59,19 @@ class ChatViewModel(
 
     private suspend fun getBotResponse(input: String): String {
         return when {
-            input.contains("hello") || input.contains("hi") -> 
+            input.contains("hello") || input.contains("hi") -> {
+                Log.v(TAG, "Greeting detected")
                 "Hi there! Ask me about your balance, goals, or spending."
+            }
             
             input.contains("balance") || input.contains("total") -> {
+                Log.v(TAG, "Balance query detected")
                 val total = repository.getTotalSpending(userId).first() ?: 0.0
                 "Your total spending to date is R%,.2f.".format(total)
             }
             
             input.contains("goal") || input.contains("save") || input.contains("target") -> {
+                Log.v(TAG, "Goals query detected")
                 val goals = goalDao.getAllGoals(userId).first()
                 if (goals.isEmpty()) {
                     "You haven't set any goals yet. Head over to the Goals section to start saving!"
@@ -74,6 +85,7 @@ class ChatViewModel(
             }
             
             input.contains("spending") || input.contains("spend") -> {
+                Log.v(TAG, "Spending summary query detected")
                 val summaries = repository.getCategorySummary(userId).first()
                 if (summaries.isEmpty()) {
                     "You haven't logged any expenses yet."
@@ -89,6 +101,7 @@ class ChatViewModel(
             }
 
             input.contains("month") -> {
+                Log.v(TAG, "Monthly spending query detected")
                 val calendar = java.util.Calendar.getInstance()
                 val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
                 calendar.set(java.util.Calendar.DAY_OF_MONTH, 1)
@@ -100,10 +113,13 @@ class ChatViewModel(
                 "You've spent R%,.2f so far this month.".format(monthTotal)
             }
             
-            input.contains("tip") || input.contains("save") || input.contains("advice") -> 
+            input.contains("tip") || input.contains("save") || input.contains("advice") -> {
+                Log.v(TAG, "Financial tip query detected")
                 tips.random()
+            }
             
             input.contains("level") || input.contains("xp") -> {
+                Log.v(TAG, "Gamification status query detected")
                 val count = repository.getExpenseCount(userId).first()
                 val expensesPerLevel = 5
                 val xpPerLevel = 100
@@ -114,7 +130,10 @@ class ChatViewModel(
                 "You're Level $level with $progress/100 XP towards the next level. Keep logging expenses to level up!"
             }
             
-            else -> "I'm not sure about that. Try asking about your balance, goals, or monthly spending."
+            else -> {
+                Log.w(TAG, "Unknown user input: $input")
+                "I'm not sure about that. Try asking about your balance, goals, or monthly spending."
+            }
         }
     }
 }

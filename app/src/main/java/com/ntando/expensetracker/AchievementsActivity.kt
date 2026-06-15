@@ -16,6 +16,7 @@ import android.animation.ObjectAnimator
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,25 +43,33 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * AchievementsActivity displays the user's "gamified" progress.
+ * It lists all possible badges and shows which ones have been unlocked based on their activity.
+ */
 class AchievementsActivity : AppCompatActivity() {
 
+    private val TAG = "AchievementsActivity"
     private lateinit var viewModel: AchievementViewModel
     private var currentUserId: Long = -1
     private var isFabExpanded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "onCreate: Initializing Achievements screen")
         setContentView(R.layout.activity_achievements)
 
         val sharedPref = getSharedPreferences("PocketEyePrefs", MODE_PRIVATE)
         currentUserId = sharedPref.getLong("current_user_id", -1)
 
         if (currentUserId == -1L) {
+            Log.w(TAG, "No user session found, redirecting")
             startActivity(Intent(this, MainActivity::class.java))
             finish()
             return
         }
 
+        // Setup ViewModel with dependency injection
         val db = DatabaseProvider.getDatabase(this)
         val repository = AchievementRepository(db.achievementDao(), db.expenseDao(), db.goalDao())
         
@@ -77,10 +86,11 @@ class AchievementsActivity : AppCompatActivity() {
         setupRecyclerView()
         setupKeyboardListener()
         
-        // Ensure achievements are seeded if user exists but has none
+        // Safety check to ensure achievements are initialized for the user
         lifecycleScope.launch {
             val existing = db.achievementDao().getAllAchievementsOnce(currentUserId)
             if (existing.isEmpty()) {
+                Log.i(TAG, "No achievements found for user $currentUserId, seeding defaults")
                 val initialAchievements = listOf(
                     Achievement(userId = currentUserId, title = "First Step", description = "Log your first expense", icon = "star"),
                     Achievement(userId = currentUserId, title = "Week Warrior", description = "Log expenses for 7 consecutive days", icon = "bolt"),
@@ -92,6 +102,9 @@ class AchievementsActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Initializes the RecyclerView to display the list of achievements.
+     */
     private fun setupRecyclerView() {
         val rv = findViewById<RecyclerView>(R.id.rvAchievements)
         val tvStats = findViewById<TextView>(R.id.tvAchievementStats)
@@ -99,8 +112,10 @@ class AchievementsActivity : AppCompatActivity() {
         rv.layoutManager = LinearLayoutManager(this)
         rv.adapter = adapter
 
+        // Observe the achievements flow from ViewModel
         lifecycleScope.launch {
             viewModel.achievements.collectLatest { list ->
+                Log.d(TAG, "Updating UI with ${list.size} achievements")
                 adapter.submitList(list)
                 val unlocked = list.count { it.isUnlocked }
                 tvStats.text = getString(R.string.achievements_unlocked_format, unlocked, list.size)
@@ -111,10 +126,12 @@ class AchievementsActivity : AppCompatActivity() {
     private fun setupHeader() {
         findViewById<TextView>(R.id.tvHeaderTitle)?.text = "Achievements"
         findViewById<View>(R.id.btnHeaderHome)?.setOnClickListener {
+            Log.v(TAG, "Header Home clicked")
             startActivity(Intent(this, Dashboard::class.java))
             finish()
         }
         findViewById<View>(R.id.btnHeaderRightAction)?.setOnClickListener {
+            Log.i(TAG, "Logging out from Achievements screen")
             val sharedPref = getSharedPreferences("PocketEyePrefs", MODE_PRIVATE)
             sharedPref.edit { remove("current_user_id") }
             startActivity(Intent(this, MainActivity::class.java))
@@ -142,6 +159,7 @@ class AchievementsActivity : AppCompatActivity() {
         }
 
         findViewById<FloatingActionButton>(R.id.fabChatBot).setOnClickListener {
+            Log.d(TAG, "Opening Chat Bot")
             ChatBottomSheetFragment().show(supportFragmentManager, "ChatBot")
         }
 
@@ -160,6 +178,7 @@ class AchievementsActivity : AppCompatActivity() {
     private fun toggleFab() { if (isFabExpanded) collapseFab() else expandFab() }
 
     private fun expandFab() {
+        Log.v(TAG, "Expanding Radial Menu")
         isFabExpanded = true
         findViewById<View>(R.id.fabDimOverlay).apply {
             visibility = View.VISIBLE
@@ -173,6 +192,7 @@ class AchievementsActivity : AppCompatActivity() {
     }
 
     private fun collapseFab() {
+        Log.v(TAG, "Collapsing Radial Menu")
         isFabExpanded = false
         findViewById<View>(R.id.fabDimOverlay).animate().alpha(0f).setDuration(300).withEndAction { 
             findViewById<View>(R.id.fabDimOverlay).visibility = View.GONE 
@@ -226,6 +246,10 @@ class AchievementsActivity : AppCompatActivity() {
     }
 }
 
+/**
+ * Adapter for rendering individual achievement items.
+ * Handles visual state for locked vs unlocked achievements (greyscale vs colored).
+ */
 class AchievementAdapter : RecyclerView.Adapter<AchievementAdapter.ViewHolder>() {
     private var items = emptyList<Achievement>()
     private val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -245,7 +269,7 @@ class AchievementAdapter : RecyclerView.Adapter<AchievementAdapter.ViewHolder>()
         holder.tvTitle.text = item.title
         holder.tvDesc.text = item.description
         
-        // Map icon string to drawable
+        // Map string-based icon keys to actual Android resources
         val iconRes = when (item.icon) {
             "star" -> android.R.drawable.btn_star_big_on
             "bolt" -> android.R.drawable.ic_menu_send
@@ -255,6 +279,7 @@ class AchievementAdapter : RecyclerView.Adapter<AchievementAdapter.ViewHolder>()
         }
         holder.ivIcon.setImageResource(iconRes)
         
+        // If unlocked, show colored and display the date
         if (item.isUnlocked) {
             holder.ivIcon.alpha = 1.0f
             holder.ivLock.visibility = View.GONE
@@ -263,6 +288,7 @@ class AchievementAdapter : RecyclerView.Adapter<AchievementAdapter.ViewHolder>()
             holder.container.alpha = 1.0f
             holder.ivIcon.imageTintList = android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#FFD700"))
         } else {
+            // If locked, show greyed out with a lock icon
             holder.ivIcon.alpha = 0.3f
             holder.ivLock.visibility = View.VISIBLE
             holder.tvDate.visibility = View.GONE
