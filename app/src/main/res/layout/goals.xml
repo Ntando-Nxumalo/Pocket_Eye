@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:clipToPadding="false"
@@ -214,7 +214,7 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Dim Overlay for FAB menu -->
@@ -250,18 +250,7 @@
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 
-    <!-- FAB and Mini FABs -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAddExpense"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:backgroundTint="@color/primary_green"
-        android:src="@android:drawable/ic_input_add"
-        app:layout_anchor="@id/bottomAppBar"
-        app:tint="@android:color/white"
-        android:elevation="12dp"
-        android:contentDescription="Menu" />
-
+    <!-- Mini FABs for Radial Menu -->
     <LinearLayout
         android:id="@+id/containerHome"
         android:layout_width="wrap_content"
@@ -272,6 +261,18 @@
         android:elevation="11dp"
         app:layout_anchor="@id/fabAddExpense"
         app:layout_anchorGravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nav_home"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"
+            android:shadowColor="#000000"
+            android:shadowRadius="4" />
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/miniFabHome"
             android:layout_width="wrap_content"
@@ -279,7 +280,8 @@
             app:fabSize="mini"
             android:src="@android:drawable/ic_menu_today"
             app:backgroundTint="@color/primary_blue"
-            app:tint="@android:color/white" />
+            app:tint="@android:color/white"
+            android:contentDescription="@string/nav_home" />
     </LinearLayout>
 
     <LinearLayout
@@ -292,6 +294,18 @@
         android:elevation="11dp"
         app:layout_anchor="@id/fabAddExpense"
         app:layout_anchorGravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nav_expense"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"
+            android:shadowColor="#000000"
+            android:shadowRadius="4" />
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/miniFabExpense"
             android:layout_width="wrap_content"
@@ -299,7 +313,8 @@
             app:fabSize="mini"
             android:src="@android:drawable/ic_menu_add"
             app:backgroundTint="@color/primary_green"
-            app:tint="@android:color/white" />
+            app:tint="@android:color/white"
+            android:contentDescription="@string/nav_expense" />
     </LinearLayout>
 
     <LinearLayout
@@ -312,6 +327,18 @@
         android:elevation="11dp"
         app:layout_anchor="@id/fabAddExpense"
         app:layout_anchorGravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nav_report"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"
+            android:shadowColor="#000000"
+            android:shadowRadius="4" />
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/miniFabReport"
             android:layout_width="wrap_content"
@@ -319,7 +346,8 @@
             app:fabSize="mini"
             android:src="@android:drawable/ic_menu_sort_by_size"
             app:backgroundTint="@color/primary_green"
-            app:tint="@android:color/white" />
+            app:tint="@android:color/white"
+            android:contentDescription="@string/nav_report" />
     </LinearLayout>
 
     <LinearLayout
@@ -332,6 +360,18 @@
         android:elevation="11dp"
         app:layout_anchor="@id/fabAddExpense"
         app:layout_anchorGravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nav_goals"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"
+            android:shadowColor="#000000"
+            android:shadowRadius="4" />
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/miniFabGoals"
             android:layout_width="wrap_content"
@@ -339,8 +379,20 @@
             app:fabSize="mini"
             android:src="@android:drawable/ic_menu_compass"
             app:backgroundTint="@color/primary_green"
-            app:tint="@android:color/white" />
+            app:tint="@android:color/white"
+            android:contentDescription="@string/nav_goals" />
     </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddExpense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:backgroundTint="@color/primary_green"
+        android:src="@android:drawable/ic_input_add"
+        app:layout_anchor="@id/bottomAppBar"
+        app:tint="@android:color/white"
+        android:elevation="12dp"
+        android:contentDescription="Menu" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabChatBot"

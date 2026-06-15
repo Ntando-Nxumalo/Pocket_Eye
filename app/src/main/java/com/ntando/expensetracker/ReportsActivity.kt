@@ -21,9 +21,9 @@ import android.view.animation.OvershootInterpolator
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.core.content.edit
 import androidx.core.graphics.toColorInt
-import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -192,7 +192,6 @@ class ReportsActivity : AppCompatActivity() {
             val category = categoriesList.find { it.id == catId }
             labels.add(category?.name ?: "Unknown")
             
-            // Consistently color categories based on their position in the main list
             val colorIdx = if (category != null) categoriesList.indexOf(category) else i
             colors.add(getCategoryColor(colorIdx))
         }
@@ -214,16 +213,12 @@ class ReportsActivity : AppCompatActivity() {
         barChart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
         barChart.xAxis.labelCount = labels.size
         
-        // Add Limit Lines for Goals
         val leftAxis = barChart.axisLeft
         leftAxis.removeAllLimitLines()
         
-        // Filter goals to show only relevant ones (Syncing with budget tracking logic)
         val relevantGoals = if (selectedCatIdx == 0) {
-            // Show only global/overall budget goals when "All" is selected
             goals.filter { it.categoryId == null && it.maxTargetAmount > 0 }
         } else {
-            // Show only goals for the selected category
             val selectedId = categoriesList.getOrNull(selectedCatIdx - 1)?.id
             goals.filter { it.categoryId == selectedId && it.maxTargetAmount > 0 }
         }
@@ -231,7 +226,7 @@ class ReportsActivity : AppCompatActivity() {
         relevantGoals.forEach { goal ->
             if (goal.minTargetAmount > 0) {
                 val minLine = LimitLine(goal.minTargetAmount.toFloat(), "${goal.name} Target Min")
-                minLine.lineColor = "#FFA726".toColorInt() // Warning Orange
+                minLine.lineColor = "#FFA726".toColorInt()
                 minLine.lineWidth = 2f
                 minLine.enableDashedLine(10f, 10f, 0f)
                 minLine.textColor = "#E65100".toColorInt()
@@ -241,7 +236,7 @@ class ReportsActivity : AppCompatActivity() {
             }
             if (goal.maxTargetAmount > 0) {
                 val maxLine = LimitLine(goal.maxTargetAmount.toFloat(), "${goal.name} Limit")
-                maxLine.lineColor = "#EF5350".toColorInt() // Alert Red
+                maxLine.lineColor = "#EF5350".toColorInt()
                 maxLine.lineWidth = 2f
                 maxLine.enableDashedLine(10f, 10f, 0f)
                 maxLine.textColor = "#C62828".toColorInt()
@@ -256,10 +251,10 @@ class ReportsActivity : AppCompatActivity() {
 
     private fun getCategoryColor(position: Int): Int {
         return when (position % 4) {
-            0 -> "#66BB6A".toColorInt() // Green
-            1 -> "#2196F3".toColorInt() // Blue
-            2 -> "#FFD54F".toColorInt() // Yellow
-            else -> "#EF5350".toColorInt() // Red
+            0 -> "#66BB6A".toColorInt()
+            1 -> "#2196F3".toColorInt()
+            2 -> "#FFD54F".toColorInt()
+            else -> "#EF5350".toColorInt()
         }
     }
 
@@ -580,7 +575,6 @@ class ReportsActivity : AppCompatActivity() {
         val now = Calendar.getInstance()
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         
-        // Efficiency: Calculate boundaries once
         val boundary = when (timeIdx) {
             0 -> Calendar.getInstance().apply { add(Calendar.MONTH, -3); set(Calendar.HOUR_OF_DAY, 0); set(Calendar.MINUTE, 0); set(Calendar.SECOND, 0); set(Calendar.MILLISECOND, 0) }.time
             1 -> Calendar.getInstance().apply { add(Calendar.MONTH, -6); set(Calendar.HOUR_OF_DAY, 0); set(Calendar.MINUTE, 0); set(Calendar.SECOND, 0); set(Calendar.MILLISECOND, 0) }.time
@@ -622,7 +616,6 @@ class ReportsActivity : AppCompatActivity() {
         val total = expenses.sumOf { it.amount }
         totalTv.text = getString(R.string.currency_format_decimal, total)
         
-        // Calculate average monthly spending based on the selected period
         val months = when (filters.timeIdx) {
             0 -> 3.0
             1 -> 6.0
@@ -638,7 +631,6 @@ class ReportsActivity : AppCompatActivity() {
                 } else 1.0
             }
             else -> {
-                // All time: calculate month range from data
                 if (expenses.isEmpty()) 1.0
                 else {
                     val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -691,7 +683,26 @@ class ReportsActivity : AppCompatActivity() {
         val filePath = File(getExternalFilesDir(null), "ExpenseReport.pdf")
         try {
             pdfDocument.writeTo(FileOutputStream(filePath))
-            Toast.makeText(this, getString(R.string.export_success, filePath.absolutePath), Toast.LENGTH_LONG).show()
+            
+            val contentUri = FileProvider.getUriForFile(this, "${packageName}.fileprovider", filePath)
+            
+            AlertDialog.Builder(this)
+                .setTitle("Export Successful")
+                .setMessage("PDF saved to:\n${filePath.absolutePath}")
+                .setPositiveButton("Open Report") { _, _ ->
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        setDataAndType(contentUri, "application/pdf")
+                        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NO_HISTORY
+                    }
+                    try {
+                        startActivity(Intent.createChooser(intent, "Open with"))
+                    } catch (e: Exception) {
+                        Toast.makeText(this, "No PDF viewer found", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .setNegativeButton("Close", null)
+                .show()
+                
         } catch (_: Exception) {
             Toast.makeText(this, "PDF Export failed", Toast.LENGTH_SHORT).show()
         }
@@ -724,7 +735,6 @@ class FilteredExpenseAdapter(
         holder.tvCategory.text = category?.name ?: "Unknown"
         holder.tvAmount.text = holder.itemView.context.getString(R.string.currency_format_decimal, expense.amount)
         
-        // Consistent colors with the rest of the app
         val posInColorList = if (category != null) categories.indexOf(category) else position
         val color = when (posInColorList % 4) {
             0 -> "#66BB6A".toColorInt()
@@ -736,14 +746,12 @@ class FilteredExpenseAdapter(
         
         if (!expense.photoPath.isNullOrEmpty()) {
             holder.ivReceipt.visibility = View.VISIBLE
-            // Use Thumbnail loading logic
             val thumbnail = loadThumbnail(expense.photoPath)
             if (thumbnail != null) {
                 holder.ivReceipt.setImageBitmap(thumbnail)
-                holder.ivReceipt.imageTintList = null // Clear tint to show photo colors
+                holder.ivReceipt.imageTintList = null
                 holder.ivReceipt.scaleType = ImageView.ScaleType.CENTER_CROP
             } else {
-                // Fallback if bitmap decoding fails (e.g. permission issues or invalid file)
                 holder.ivReceipt.setImageResource(android.R.drawable.ic_menu_camera)
                 holder.ivReceipt.scaleType = ImageView.ScaleType.FIT_CENTER
             }
