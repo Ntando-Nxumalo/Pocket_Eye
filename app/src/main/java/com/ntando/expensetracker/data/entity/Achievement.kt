@@ -24,5 +24,6 @@ data class Achievement(
     val description: String,
     val icon: String,
     val isUnlocked: Boolean = false,
-    val dateUnlocked: Long? = null
+    val dateUnlocked: Long? = null,
+    val isNotified: Boolean = false
 )

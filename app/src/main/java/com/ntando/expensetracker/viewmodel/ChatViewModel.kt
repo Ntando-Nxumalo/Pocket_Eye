@@ -105,9 +105,12 @@ class ChatViewModel(
             
             input.contains("level") || input.contains("xp") -> {
                 val count = repository.getExpenseCount(userId).first()
-                val userXP = count * 10
-                val level = (userXP / 100) + 1
-                val progress = userXP % 100
+                val expensesPerLevel = 5
+                val xpPerLevel = 100
+                val xpPerExpense = xpPerLevel / expensesPerLevel
+                
+                val level = (count / expensesPerLevel) + 1
+                val progress = (count % expensesPerLevel) * xpPerExpense
                 "You're Level $level with $progress/100 XP towards the next level. Keep logging expenses to level up!"
             }
             

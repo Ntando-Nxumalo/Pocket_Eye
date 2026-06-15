@@ -14,7 +14,7 @@ import com.ntando.expensetracker.data.entity.*
         Achievement::class,
         CurrencyRate::class
     ],
-    version = 6 // Incremented version for Goal.categoryId field
+    version = 7
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao

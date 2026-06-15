@@ -8,7 +8,7 @@
  * - Radial navigation menu
  * - Jetpack Compose charts (Spending & Savings)
  * - Real-time currency conversion
- * - XP and Leveling system logic
+ * - XP and Leveling system logic with celebrations
  * 
  * References:
  * - Jetpack Compose Canvas: https://developer.android.com/jetpack/compose/graphics/draw/overview
@@ -33,6 +33,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.OvershootInterpolator
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
@@ -72,9 +73,11 @@ import com.ntando.expensetracker.data.dao.CategorySummary
 import com.ntando.expensetracker.data.database.DatabaseProvider
 import com.ntando.expensetracker.data.entity.Category
 import com.ntando.expensetracker.data.entity.Goal
+import com.ntando.expensetracker.data.repository.AchievementRepository
 import com.ntando.expensetracker.data.repository.ExpenseRepository
 import com.ntando.expensetracker.ui.chat.ChatBottomSheetFragment
 import com.ntando.expensetracker.viewmodel.CurrencyViewModel
+import com.ntando.expensetracker.viewmodel.ExpenseEvent
 import com.ntando.expensetracker.viewmodel.ExpenseViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -108,11 +111,12 @@ class Dashboard : AppCompatActivity() {
 
         val db = DatabaseProvider.getDatabase(this)
         val repository = ExpenseRepository(db.expenseDao(), db.categoryDao())
+        val achievementRepository = AchievementRepository(db.achievementDao(), db.expenseDao(), db.goalDao())
         
         val factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                return ExpenseViewModel(repository, currentUserId) as T
+                return ExpenseViewModel(repository, currentUserId, achievementRepository) as T
             }
         }
         viewModel = ViewModelProvider(this, factory)[ExpenseViewModel::class.java]
@@ -416,8 +420,6 @@ class Dashboard : AppCompatActivity() {
         animateRadial(findViewById(R.id.containerExpense), -100f, -140f, true)
         animateRadial(findViewById(R.id.containerReport), 100f, -140f, true)
         animateRadial(findViewById(R.id.containerGoals), -160f, -20f, true)
-        
-        // Add a hidden Achievements container if exists, or just repurpose one
     }
 
     private fun collapseFab() {
@@ -472,13 +474,40 @@ class Dashboard : AppCompatActivity() {
         }
         lifecycleScope.launch {
             viewModel.expenseCount.collect { count ->
-                val userXP = count * 10
-                val progress = userXP % 100
+                val xpPerLevel = 100
+                val expensesPerLevel = 5
+                val xpPerExpense = xpPerLevel / expensesPerLevel
+                
+                val currentLevel = (count / expensesPerLevel) + 1
+                val progress = (count % expensesPerLevel) * xpPerExpense
+                
                 tvXP.text = getString(R.string.xp_progress_format, progress)
                 progressLevel.progress = progress
-                tvLevelLabel.text = getString(R.string.level_format, (userXP / 100) + 1)
+                tvLevelLabel.text = getString(R.string.level_format, currentLevel)
             }
         }
+
+        lifecycleScope.launch {
+            viewModel.events.collect { event ->
+                when (event) {
+                    is ExpenseEvent.LevelUp -> {
+                        showCelebrationDialog("Level Up!", "Congratulations! You've reached Level ${event.newLevel}. Keep up the great financial habits!")
+                    }
+                    is ExpenseEvent.AchievementUnlocked -> {
+                        showCelebrationDialog("New Badge Unlocked!", "You've earned the '${event.title}' badge! Check your Achievements gallery.")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showCelebrationDialog(title: String, message: String) {
+        AlertDialog.Builder(this)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("Awesome!") { dialog, _ -> dialog.dismiss() }
+            .setIcon(android.R.drawable.btn_star_big_on)
+            .show()
     }
 }
 

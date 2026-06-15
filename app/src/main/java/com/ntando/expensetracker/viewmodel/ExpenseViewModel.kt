@@ -7,13 +7,15 @@ import com.ntando.expensetracker.data.entity.Category
 import com.ntando.expensetracker.data.entity.Expense
 import com.ntando.expensetracker.data.repository.AchievementRepository
 import com.ntando.expensetracker.data.repository.ExpenseRepository
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+
+sealed class ExpenseEvent {
+    data class AchievementUnlocked(val title: String) : ExpenseEvent()
+    data class LevelUp(val newLevel: Int) : ExpenseEvent()
+}
 
 class ExpenseViewModel(
     private val repository: ExpenseRepository,
@@ -22,6 +24,9 @@ class ExpenseViewModel(
 ) : ViewModel() {
 
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    
+    private val _events = MutableSharedFlow<ExpenseEvent>()
+    val events = _events.asSharedFlow()
 
     private fun getCurrentMonthStart(): String {
         val cal = Calendar.getInstance()
@@ -67,6 +72,19 @@ class ExpenseViewModel(
         initialValue = 0
     )
 
+    // Level tracking to detect level-up (Now levels up every 5 expenses)
+    init {
+        viewModelScope.launch {
+            expenseCount
+                .map { (it / 5) + 1 }
+                .distinctUntilChanged()
+                .drop(1) // Skip initial level
+                .collect { newLevel ->
+                    _events.emit(ExpenseEvent.LevelUp(newLevel))
+                }
+        }
+    }
+
     // Reactive Current Month Data
     val currentMonthTotalSpending: StateFlow<Double> = repository.getTotalExpensesInRange(userId, getCurrentMonthStart(), getCurrentMonthEnd())
         .map { it ?: 0.0 }
@@ -97,7 +115,10 @@ class ExpenseViewModel(
                     photoPath = photoPath
                 )
             )
-            achievementRepository?.checkAndUnlockAchievements(userId)
+            val newlyUnlocked = achievementRepository?.checkAndUnlockAchievements(userId)
+            newlyUnlocked?.forEach { title ->
+                _events.emit(ExpenseEvent.AchievementUnlocked(title))
+            }
         }
     }
 }

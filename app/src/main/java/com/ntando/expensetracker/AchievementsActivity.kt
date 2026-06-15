@@ -1,3 +1,12 @@
+/**
+ * AchievementsActivity.kt
+ * Displays the user's earned badges and locked achievements.
+ * Maps achievement data to visual icons and handles unlocking progress.
+ * 
+ * References:
+ * - RecyclerView Adapter: https://developer.android.com/guide/topics/ui/layout/recyclerview
+ * - Android Vector Assets: https://developer.android.com/develop/ui/views/graphics/vector-drawable-resources
+ */
 package com.ntando.expensetracker
 
 import android.animation.Animator
@@ -67,6 +76,20 @@ class AchievementsActivity : AppCompatActivity() {
         setupNavigation()
         setupRecyclerView()
         setupKeyboardListener()
+        
+        // Ensure achievements are seeded if user exists but has none
+        lifecycleScope.launch {
+            val existing = db.achievementDao().getAllAchievementsOnce(currentUserId)
+            if (existing.isEmpty()) {
+                val initialAchievements = listOf(
+                    Achievement(userId = currentUserId, title = "First Step", description = "Log your first expense", icon = "star"),
+                    Achievement(userId = currentUserId, title = "Week Warrior", description = "Log expenses for 7 consecutive days", icon = "bolt"),
+                    Achievement(userId = currentUserId, title = "Budget Boss", description = "Stay within your monthly goal for the full month", icon = "wallet"),
+                    Achievement(userId = currentUserId, title = "Consistent Tracker", description = "Log at least one expense every day for 30 days", icon = "calendar")
+                )
+                initialAchievements.forEach { db.achievementDao().insertAchievement(it) }
+            }
+        }
     }
 
     private fun setupRecyclerView() {
@@ -123,7 +146,7 @@ class AchievementsActivity : AppCompatActivity() {
         }
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigation)
-        bottomNav.selectedItemId = 0 // None selected
+        bottomNav.selectedItemId = 0 
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> { startActivity(Intent(this, Dashboard::class.java)); finish(); true }
@@ -222,17 +245,29 @@ class AchievementAdapter : RecyclerView.Adapter<AchievementAdapter.ViewHolder>()
         holder.tvTitle.text = item.title
         holder.tvDesc.text = item.description
         
+        // Map icon string to drawable
+        val iconRes = when (item.icon) {
+            "star" -> android.R.drawable.btn_star_big_on
+            "bolt" -> android.R.drawable.ic_menu_send
+            "wallet" -> android.R.drawable.ic_menu_view
+            "calendar" -> android.R.drawable.ic_menu_today
+            else -> android.R.drawable.btn_star_big_on
+        }
+        holder.ivIcon.setImageResource(iconRes)
+        
         if (item.isUnlocked) {
             holder.ivIcon.alpha = 1.0f
             holder.ivLock.visibility = View.GONE
             holder.tvDate.visibility = View.VISIBLE
             holder.tvDate.text = "Unlocked: ${item.dateUnlocked?.let { sdf.format(Date(it)) } ?: "N/A"}"
             holder.container.alpha = 1.0f
+            holder.ivIcon.imageTintList = android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#FFD700"))
         } else {
             holder.ivIcon.alpha = 0.3f
             holder.ivLock.visibility = View.VISIBLE
             holder.tvDate.visibility = View.GONE
             holder.container.alpha = 0.6f
+            holder.ivIcon.imageTintList = android.content.res.ColorStateList.valueOf(android.graphics.Color.GRAY)
         }
     }
 

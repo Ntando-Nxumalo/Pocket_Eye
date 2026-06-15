@@ -16,93 +16,83 @@ class AchievementRepository(
 ) {
     fun getAllAchievements(userId: Long): Flow<List<Achievement>> = achievementDao.getAllAchievements(userId)
 
-    suspend fun insertAchievement(achievement: Achievement) {
-        achievementDao.insertAchievement(achievement)
-    }
-
-    suspend fun updateAchievement(achievement: Achievement) {
-        achievementDao.updateAchievement(achievement)
-    }
-
-    suspend fun checkAndUnlockAchievements(userId: Long) {
+    suspend fun checkAndUnlockAchievements(userId: Long): List<String> {
+        val newlyUnlocked = mutableListOf<String>()
         val currentTime = System.currentTimeMillis()
         val allExpenses = expenseDao.getAllExpenses(userId).first()
         val count = allExpenses.size
 
-        // 1. 'First Step' - Log your first expense
+        // 1. 'First Step'
         if (count >= 1) {
-            achievementDao.unlockAchievement("First Step", userId, currentTime)
+            if (achievementDao.unlockAchievement("First Step", userId, currentTime) > 0) {
+                newlyUnlocked.add("First Step")
+            }
         }
 
-        // Get distinct dates for consistency checks
         val distinctDates = expenseDao.getDistinctExpenseDates(userId)
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
-        // 2. 'Week Warrior' - Log expenses for 7 consecutive days
+        // 2. 'Week Warrior'
         if (hasConsecutiveDays(distinctDates, 7, sdf)) {
-            achievementDao.unlockAchievement("Week Warrior", userId, currentTime)
+            if (achievementDao.unlockAchievement("Week Warrior", userId, currentTime) > 0) {
+                newlyUnlocked.add("Week Warrior")
+            }
         }
 
-        // 3. 'Consistent Tracker' - Log at least one expense every day for 30 days
+        // 3. 'Consistent Tracker'
         if (hasConsecutiveDays(distinctDates, 30, sdf)) {
-            achievementDao.unlockAchievement("Consistent Tracker", userId, currentTime)
+            if (achievementDao.unlockAchievement("Consistent Tracker", userId, currentTime) > 0) {
+                newlyUnlocked.add("Consistent Tracker")
+            }
         }
 
-        // 4. 'Budget Boss' - Stay within your monthly goal for the full month
-        checkBudgetBoss(userId, currentTime)
+        // 4. 'Budget Boss'
+        if (checkBudgetBossInternal(userId, currentTime)) {
+            if (achievementDao.unlockAchievement("Budget Boss", userId, currentTime) > 0) {
+                newlyUnlocked.add("Budget Boss")
+            }
+        }
+
+        return newlyUnlocked
     }
 
     private fun hasConsecutiveDays(dates: List<String>, requiredDays: Int, sdf: SimpleDateFormat): Boolean {
         if (dates.size < requiredDays) return false
-        
         var consecutiveCount = 1
         for (i in 0 until dates.size - 1) {
             val date1 = try { sdf.parse(dates[i]) } catch(_: Exception) { null }
             val date2 = try { sdf.parse(dates[i+1]) } catch(_: Exception) { null }
-            
             if (date1 != null && date2 != null) {
                 val diff = (date1.time - date2.time) / (1000 * 60 * 60 * 24)
                 if (diff == 1L) {
                     consecutiveCount++
                     if (consecutiveCount >= requiredDays) return true
-                } else {
-                    consecutiveCount = 1
-                }
+                } else { consecutiveCount = 1 }
             }
         }
         return false
     }
 
-    private suspend fun checkBudgetBoss(userId: Long, currentTime: Long) {
-        if (goalDao == null) return
-        
-        // Fetch all goals for the user
+    private suspend fun checkBudgetBossInternal(userId: Long, currentTime: Long): Boolean {
+        if (goalDao == null) return false
         val goals = goalDao.getAllGoals(userId).first()
-        if (goals.isEmpty()) return
-
-        // Find the "Total Monthly Budget" goal (no categoryId and maxTargetAmount > 0)
         val totalBudgetGoal = goals.find { it.categoryId == null && it.maxTargetAmount > 0 }
         val monthlyLimit = totalBudgetGoal?.maxTargetAmount ?: 0.0
-
-        if (monthlyLimit <= 0) return
+        if (monthlyLimit <= 0) return false
 
         val calendar = Calendar.getInstance()
-        // Check last month
         calendar.add(Calendar.MONTH, -1)
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        calendar.set(year, month, 1)
-        val startDate = sdf.format(calendar.time)
-        calendar.set(year, month, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
-        val endDate = sdf.format(calendar.time)
+        calendar.set(Calendar.DAY_OF_MONTH, 1)
+        val start = sdf.format(calendar.time)
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
+        val end = sdf.format(calendar.time)
 
-        val totalSpending = expenseDao.getTotalExpensesInRange(userId, startDate, endDate).first() ?: 0.0
+        val spent = expenseDao.getTotalExpensesInRange(userId, start, end).first() ?: 0.0
+        return spent > 0 && spent <= monthlyLimit
+    }
 
-        // Only unlock if they actually spent something (to make it an achievement)
-        if (totalSpending > 0 && totalSpending <= monthlyLimit) {
-            achievementDao.unlockAchievement("Budget Boss", userId, currentTime)
-        }
+    suspend fun updateAchievement(achievement: Achievement) {
+        achievementDao.updateAchievement(achievement)
     }
 }
