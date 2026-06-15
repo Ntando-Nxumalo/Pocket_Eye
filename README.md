@@ -30,15 +30,27 @@ The app is designed for students, young professionals, and anyone looking to mov
 
 ### 1. 🤖 AI Chat Assistant (PocketEye Bot)
 A built-in assistant that uses natural language to answer questions about your balance, progress towards goals, and provides tailored saving tips based on your spending history. It can analyze your data to give you quick summaries without navigating through menus.
+<img width="738" height="1600" alt="WhatsApp Image 2026-06-15 at 21 42 27" src="https://github.com/user-attachments/assets/1b11c884-166c-41f1-bbb0-02d46f62663e" />
+
+
 
 ### 2. 💱 Integrated Multi-Currency Converter
 A real-time tool on the dashboard to quickly convert expenses between **ZAR, USD, EUR, GBP, AUD, and CNY**. This is essential for tracking international spending or planning trips without leaving the app. It uses a custom ViewModel to handle conversion logic instantly as the user types.
+<img width="738" height="1600" alt="WhatsApp Image 2026-06-15 at 21 42 28 (2)" src="https://github.com/user-attachments/assets/161046a4-c257-4c11-a29c-7a413c08cf1e" />
+
 
 ## 🏗 Technical Details
 - **UI Framework**: Jetpack Compose & XML (Hybrid).
 - **Database**: **Room Persistence Library** with Flow support for real-time updates.
 - **Navigation**: Custom **Radial Navigation Menu** for a unique and fluid user experience.
 - **Concurrency**: **Kotlin Coroutines** and **Flow** for reactive data handling.
+  <img width="738" height="1600" alt="WhatsApp Image 2026-06-15 at 21 42 27 (1)" src="https://github.com/user-attachments/assets/03ebff16-9020-48d5-8412-2bb27616eb32" />
+  <img width="738" height="1600" alt="WhatsApp Image 2026-06-15 at 21 42 28 (1)" src="https://github.com/user-attachments/assets/f8cd91f6-aa95-4eb5-9dbd-3be47446189b" />
+<img width="738" height="1600" alt="WhatsApp Image 2026-06-15 at 21 42 28" src="https://github.com/user-attachments/assets/94a9619f-467d-4f4b-a068-76edae177ab2" />
+
+
+
+
 
 ## 🔧 Installation
 1. Clone the repository:
