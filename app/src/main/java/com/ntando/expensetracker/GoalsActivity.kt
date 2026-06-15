@@ -21,7 +21,6 @@ import com.ntando.expensetracker.data.database.DatabaseProvider
 import com.ntando.expensetracker.data.entity.Category
 import com.ntando.expensetracker.data.entity.Goal
 import com.ntando.expensetracker.ui.chat.ChatBottomSheetFragment
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class SetGoalsActivity : AppCompatActivity() {
@@ -57,7 +56,6 @@ class SetGoalsActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             val db = DatabaseProvider.getDatabase(this@SetGoalsActivity)
-            // Fix: Load only user's categories
             categoriesList = db.categoryDao().getAllCategoriesOnce(currentUserId)
             
             val categoryNames = mutableListOf("No Category (Savings/Total Budget)")
@@ -78,7 +76,6 @@ class SetGoalsActivity : AppCompatActivity() {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spCategory.adapter = adapter
 
-            // Check for edit mode after categories are loaded
             val goalId = intent.getIntExtra("EXTRA_GOAL_ID", -1)
             if (goalId != -1) {
                 val goal = db.goalDao().getGoalById(goalId, currentUserId)
@@ -96,7 +93,6 @@ class SetGoalsActivity : AppCompatActivity() {
                     }
                     
                     btnSaveGoals.text = "Update Goal"
-                    findViewById<TextView>(R.id.tvGoalCardTitle)?.text = "Edit Goal"
                 }
             }
         }
@@ -155,12 +151,12 @@ class SetGoalsActivity : AppCompatActivity() {
             val screenHeight = rootView.rootView.height
             val keypadHeight = screenHeight - rect.bottom
 
-            if (keypadHeight > screenHeight * 0.15) { // Keyboard is shown
+            if (keypadHeight > screenHeight * 0.15) {
                 bottomAppBar?.visibility = View.GONE
                 fab?.visibility = View.GONE
                 chatFab?.visibility = View.GONE
                 if (isFabExpanded) collapseFab()
-            } else { // Keyboard is hidden
+            } else {
                 bottomAppBar?.visibility = View.VISIBLE
                 fab?.visibility = View.VISIBLE
                 chatFab?.visibility = View.VISIBLE
@@ -170,10 +166,7 @@ class SetGoalsActivity : AppCompatActivity() {
 
     private fun setupHeader() {
         findViewById<TextView>(R.id.tvHeaderTitle)?.text = "Goals"
-        findViewById<View>(R.id.btnHeaderHome)?.setOnClickListener {
-            startActivity(Intent(this, Dashboard::class.java))
-            finish()
-        }
+        findViewById<View>(R.id.btnHeaderHome)?.setOnClickListener { finish() }
         findViewById<View>(R.id.btnHeaderRightAction)?.setOnClickListener {
             val sharedPref = getSharedPreferences("PocketEyePrefs", MODE_PRIVATE)
             sharedPref.edit { remove("current_user_id") }
@@ -189,26 +182,10 @@ class SetGoalsActivity : AppCompatActivity() {
         fabMain.setOnClickListener { toggleFab() }
         overlay.setOnClickListener { if (isFabExpanded) collapseFab() }
 
-        findViewById<View>(R.id.miniFabHome).setOnClickListener {
-            startActivity(Intent(this, Dashboard::class.java))
-            finish()
-        }
-
-        findViewById<View>(R.id.miniFabExpense).setOnClickListener {
-            startActivity(Intent(this, AddExpenseActivity::class.java))
-            collapseFab()
-            finish()
-        }
-        
-        findViewById<View>(R.id.miniFabReport).setOnClickListener {
-            startActivity(Intent(this, ReportsActivity::class.java))
-            collapseFab()
-            finish()
-        }
-        
-        findViewById<View>(R.id.miniFabGoals).setOnClickListener {
-            collapseFab()
-        }
+        findViewById<View>(R.id.miniFabHome).setOnClickListener { finish() }
+        findViewById<View>(R.id.miniFabExpense).setOnClickListener { startActivity(Intent(this, AddExpenseActivity::class.java)); finish() }
+        findViewById<View>(R.id.miniFabReport).setOnClickListener { startActivity(Intent(this, ReportsActivity::class.java)); finish() }
+        findViewById<View>(R.id.miniFabGoals).setOnClickListener { collapseFab() }
 
         findViewById<FloatingActionButton>(R.id.fabChatBot).setOnClickListener {
             ChatBottomSheetFragment().show(supportFragmentManager, "ChatBot")
@@ -218,7 +195,7 @@ class SetGoalsActivity : AppCompatActivity() {
         bottomNav.selectedItemId = R.id.nav_goals
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_home -> { startActivity(Intent(this, Dashboard::class.java)); finish(); true }
+                R.id.nav_home -> { finish(); true }
                 R.id.nav_goals -> true
                 R.id.nav_report -> { startActivity(Intent(this, ReportsActivity::class.java)); finish(); true }
                 else -> false
@@ -226,19 +203,12 @@ class SetGoalsActivity : AppCompatActivity() {
         }
     }
 
-    private fun toggleFab() {
-        if (isFabExpanded) collapseFab() else expandFab()
-    }
+    private fun toggleFab() { if (isFabExpanded) collapseFab() else expandFab() }
 
     private fun expandFab() {
         isFabExpanded = true
-        val fabMain = findViewById<FloatingActionButton>(R.id.fabAddExpense)
-        val overlay = findViewById<View>(R.id.fabDimOverlay)
-
-        overlay.visibility = View.VISIBLE
-        overlay.animate().alpha(1f).setDuration(300).start()
-        fabMain.animate().rotation(45f).setDuration(300).setInterpolator(OvershootInterpolator()).start()
-
+        findViewById<View>(R.id.fabDimOverlay).apply { visibility = View.VISIBLE; animate().alpha(1f).duration = 300 }
+        findViewById<FloatingActionButton>(R.id.fabAddExpense).animate().rotation(45f).duration = 300
         animateRadial(findViewById(R.id.containerHome), 0f, -180f, true)
         animateRadial(findViewById(R.id.containerExpense), -100f, -140f, true)
         animateRadial(findViewById(R.id.containerReport), 100f, -140f, true)
@@ -247,12 +217,8 @@ class SetGoalsActivity : AppCompatActivity() {
 
     private fun collapseFab() {
         isFabExpanded = false
-        val fabMain = findViewById<FloatingActionButton>(R.id.fabAddExpense)
-        val overlay = findViewById<View>(R.id.fabDimOverlay)
-
-        overlay.animate().alpha(0f).setDuration(300).withEndAction { overlay.visibility = View.GONE }.start()
-        fabMain.animate().rotation(0f).setDuration(300).setInterpolator(OvershootInterpolator()).start()
-
+        findViewById<View>(R.id.fabDimOverlay).animate().alpha(0f).setDuration(300).withEndAction { findViewById<View>(R.id.fabDimOverlay).visibility = View.GONE }.start()
+        findViewById<FloatingActionButton>(R.id.fabAddExpense).animate().rotation(0f).duration = 300
         animateRadial(findViewById(R.id.containerHome), 0f, 0f, false)
         animateRadial(findViewById(R.id.containerExpense), 0f, 0f, false)
         animateRadial(findViewById(R.id.containerReport), 0f, 0f, false)
@@ -260,24 +226,17 @@ class SetGoalsActivity : AppCompatActivity() {
     }
 
     private fun animateRadial(view: View, tx: Float, ty: Float, expand: Boolean) {
-        if (expand) {
-            view.visibility = View.VISIBLE
-            view.alpha = 0f
-        }
-        
+        if (expand) { view.visibility = View.VISIBLE; view.alpha = 0f }
         val density = resources.displayMetrics.density
         val animX = ObjectAnimator.ofFloat(view, "translationX", if (expand) tx * density else 0f)
         val animY = ObjectAnimator.ofFloat(view, "translationY", if (expand) ty * density else 0f)
         val animAlpha = ObjectAnimator.ofFloat(view, "alpha", if (expand) 1f else 0f)
-        
         AnimatorSet().apply {
             playTogether(animX, animY, animAlpha)
             duration = 300
             interpolator = OvershootInterpolator()
             addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    if (!expand) view.visibility = View.INVISIBLE
-                }
+                override fun onAnimationEnd(animation: Animator) { if (!expand) view.visibility = View.INVISIBLE }
             })
             start()
         }

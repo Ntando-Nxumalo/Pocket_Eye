@@ -5,6 +5,7 @@
     <string name="nav_goals">Goals</string>
     <string name="nav_report">Report</string>
     <string name="nav_profile">Profile</string>
+    <string name="nav_achievements">Badges</string>
     <string name="currency_format">R%d</string>
     <string name="currency_format_decimal">R%.2f</string>
     <string name="xp_progress_format">%d / 100 XP</string>
@@ -22,9 +23,13 @@
     <string name="category_other">Other</string>
     <string name="error_fill_fields">Please fill in all required fields</string>
     <string name="expense_saved">Expense saved!</string>
-    <string name="goal_updated">Goal \'%s\' updated!</string>
-    <string name="goal_added">Goal \'%s\' added!</string>
+    <string name="goal_updated">Goal updated!</string>
+    <string name="goal_added">Goal added!</string>
+    <string name="update_goal">Update Goal</string>
+    <string name="add_goal">Add Goal</string>
     <string name="error_invalid_goal">Please enter a valid goal name and target</string>
     <string name="edit_goals">Edit Goals</string>
     <string name="savings_goals">Savings Goals</string>
+    <string name="achievements_unlocked_format">%1$d/%2$d Achievements Unlocked</string>
+    <string name="no_category_goal">No Category (Savings/Total Budget)</string>
 </resources>

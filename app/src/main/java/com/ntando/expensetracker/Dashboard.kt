@@ -1,3 +1,20 @@
+/**
+ * Dashboard.kt
+ * Main screen of the Pocket Eye app.
+ * Displays spending summary, gamification XP bar, savings goal charts,
+ * budget tracker, and a currency converter.
+ * 
+ * Features:
+ * - Radial navigation menu
+ * - Jetpack Compose charts (Spending & Savings)
+ * - Real-time currency conversion
+ * - XP and Leveling system logic
+ * 
+ * References:
+ * - Jetpack Compose Canvas: https://developer.android.com/jetpack/compose/graphics/draw/overview
+ * - Android MVVM Pattern: https://developer.android.com/topic/libraries/architecture/viewmodel
+ * - Animated Radial Menu: Inspired by Material Design FAB patterns.
+ */
 package com.ntando.expensetracker
 
 import android.animation.Animator
@@ -141,6 +158,7 @@ class Dashboard : AppCompatActivity() {
         val btnLogout = findViewById<View>(R.id.btnHeaderRightAction)
         val btnEditGoals = findViewById<ImageButton>(R.id.btnEditGoals)
         val btnManageCategories = findViewById<ImageButton>(R.id.btnManageCategories)
+        val xpCard = findViewById<View>(R.id.xpCard)
 
         ivShowHide.setOnClickListener {
             isBalanceVisible = !isBalanceVisible
@@ -177,6 +195,10 @@ class Dashboard : AppCompatActivity() {
             startActivity(Intent(this, ManageCategoriesActivity::class.java))
         }
 
+        xpCard?.setOnClickListener {
+            startActivity(Intent(this, AchievementsActivity::class.java))
+        }
+
         findViewById<View>(R.id.ivLogo)?.setOnClickListener { if (isFabExpanded) collapseFab() }
 
         setupCharts(db)
@@ -192,7 +214,6 @@ class Dashboard : AppCompatActivity() {
 
         if (etAmount == null || etResult == null || spFrom == null || spTo == null) return
 
-        // Programmatic color fix
         etAmount.setTextColor(AndroidColor.BLACK)
         etAmount.setHintTextColor(AndroidColor.BLACK)
         etResult.setTextColor(AndroidColor.BLACK)
@@ -276,18 +297,9 @@ class Dashboard : AppCompatActivity() {
             ) {
                 if (goals.isEmpty()) {
                     item {
-                        val dummyEdit = {
-                            val intent = Intent(this@Dashboard, SetGoalsActivity::class.java)
-                            startActivity(intent)
-                        }
-                        PremiumGoalChart(percentage = 0.6f, label = "Vacation", color = Color(0xFF66BB6A), savedAmount = 6000.0, targetAmount = 10000.0, onEditClick = dummyEdit)
-                    }
-                    item {
-                        val dummyEdit = {
-                            val intent = Intent(this@Dashboard, SetGoalsActivity::class.java)
-                            startActivity(intent)
-                        }
-                        PremiumGoalChart(percentage = 0.35f, label = "New Car", color = Color(0xFFFFD54F), savedAmount = 3500.0, targetAmount = 10000.0, onEditClick = dummyEdit)
+                        PremiumGoalChart(percentage = 0.6f, label = "Vacation", color = Color(0xFF66BB6A), savedAmount = 6000.0, targetAmount = 10000.0, onEditClick = {
+                            startActivity(Intent(this@Dashboard, SetGoalsActivity::class.java))
+                        })
                     }
                 } else {
                     itemsIndexed(goals) { index, goal ->
@@ -404,6 +416,8 @@ class Dashboard : AppCompatActivity() {
         animateRadial(findViewById(R.id.containerExpense), -100f, -140f, true)
         animateRadial(findViewById(R.id.containerReport), 100f, -140f, true)
         animateRadial(findViewById(R.id.containerGoals), -160f, -20f, true)
+        
+        // Add a hidden Achievements container if exists, or just repurpose one
     }
 
     private fun collapseFab() {
@@ -527,12 +541,10 @@ fun PremiumGoalChart(percentage: Float, label: String, color: Color, savedAmount
         ) {
             Canvas(modifier = Modifier.size(75.dp)) {
                 val sw = 7.dp.toPx()
-                // Smooth circular background track ring
                 drawCircle(
                     color = Color(0xFFF5F5F5),
                     style = Stroke(width = sw)
                 )
-                // Smooth circular progress arc
                 drawArc(
                     color = color,
                     startAngle = -90f,
@@ -604,19 +616,12 @@ fun BudgetTracker(
     categories: List<Category>,
     onEditGoal: (Int) -> Unit
 ) {
-    // Budget goals are goals that have a maxTargetAmount > 0
     val budgetGoals = goals.filter { it.maxTargetAmount > 0 }
-    
-    // Find a "Total Monthly Budget" goal (no categoryId)
     val totalBudgetGoal = budgetGoals.find { it.categoryId == null }
-    
-    // Category-specific budgets
     val categoryBudgets = budgetGoals.filter { it.categoryId != null }
-
     val totalMaxBudget = totalBudgetGoal?.maxTargetAmount ?: categoryBudgets.sumOf { it.maxTargetAmount }
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        // Summary Card
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
@@ -654,14 +659,12 @@ fun BudgetTracker(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Category Budget Progress
         categoryBudgets.forEach { goal ->
             val category = categories.find { it.id == goal.categoryId }
             val categoryName = category?.name ?: goal.name
             val spentInCategory = summaries.find { it.categoryId == goal.categoryId }?.totalAmount ?: 0.0
             val maxGoal = goal.maxTargetAmount
             val minGoal = goal.minTargetAmount
-            
             val progress = if (maxGoal > 0) (spentInCategory / maxGoal).toFloat() else 0f
             
             val barColor = when {
@@ -727,24 +730,6 @@ fun BudgetTracker(
                             .fillMaxWidth(animatedProgress)
                             .fillMaxHeight()
                             .background(animatedColor)
-                    )
-                }
-                
-                if (spentInCategory >= maxGoal) {
-                    Text(
-                        text = "Budget Exceeded!",
-                        color = Color(0xFFEF5350),
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(top = 2.dp)
-                    )
-                } else if (minGoal > 0 && spentInCategory >= minGoal) {
-                    Text(
-                        text = "Watch out! Over minimum limit.",
-                        color = Color(0xFFFFA726),
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Medium,
-                        modifier = Modifier.padding(top = 2.dp)
                     )
                 }
             }
