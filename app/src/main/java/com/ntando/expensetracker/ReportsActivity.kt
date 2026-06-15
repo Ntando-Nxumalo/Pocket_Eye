@@ -268,9 +268,17 @@ class ReportsActivity : AppCompatActivity() {
         rv.adapter = expenseAdapter
     }
 
+    private fun getUri(path: String): Uri {
+        return if (path.startsWith("content://") || path.startsWith("file://")) {
+            Uri.parse(path)
+        } else {
+            Uri.fromFile(File(path))
+        }
+    }
+
     private fun loadBitmapFromUri(path: String, targetSize: Int = 0): Bitmap? {
         return try {
-            val uri = Uri.parse(path)
+            val uri = getUri(path)
             contentResolver.openInputStream(uri)?.use { inputStream ->
                 if (targetSize > 0) {
                     val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
@@ -313,10 +321,17 @@ class ReportsActivity : AppCompatActivity() {
 
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_view_photo, null)
         val imageView = dialogView.findViewById<ImageView>(R.id.ivFullPhoto)
+        
+        val frameLayout = FrameLayout(this).apply {
+            layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        }
+        frameLayout.addView(dialogView)
+        
         val progressBar = ProgressBar(this).apply {
             layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, android.view.Gravity.CENTER)
+            visibility = View.VISIBLE
         }
-        (dialogView as ViewGroup).addView(progressBar)
+        frameLayout.addView(progressBar)
 
         lifecycleScope.launch {
             val bitmap = withContext(Dispatchers.IO) {
@@ -327,7 +342,7 @@ class ReportsActivity : AppCompatActivity() {
                 imageView.setImageBitmap(bitmap)
             } else {
                 try {
-                    imageView.setImageURI(Uri.parse(path))
+                    imageView.setImageURI(getUri(path))
                 } catch (e: Exception) {
                     Toast.makeText(this@ReportsActivity, "Failed to load image", Toast.LENGTH_SHORT).show()
                 }
@@ -335,7 +350,7 @@ class ReportsActivity : AppCompatActivity() {
         }
 
         AlertDialog.Builder(this)
-            .setView(dialogView)
+            .setView(frameLayout)
             .setPositiveButton("Close", null)
             .show()
     }
@@ -375,16 +390,9 @@ class ReportsActivity : AppCompatActivity() {
             override fun onItemSelected(p0: AdapterView<*>?, view: View?, position: Int, p3: Long) {
                 selectedTimePeriod.value = position
                 (view as? TextView)?.setTextColor(AndroidColor.BLACK)
-                if (position == 4) { // Custom Range
-                    etStart.visibility = View.VISIBLE
-                    etEnd.visibility = View.VISIBLE
-                } else {
-                    etStart.visibility = View.GONE
-                    etEnd.visibility = View.GONE
-                    startDateFlow.value = ""
-                    endDateFlow.value = ""
-                    etStart.setText("")
-                    etEnd.setText("")
+                // Always keep date fields visible but reset if not custom and values are empty
+                if (position != 4 && startDateFlow.value.isEmpty() && endDateFlow.value.isEmpty()) {
+                    // Just stay as is
                 }
             }
             override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -394,6 +402,9 @@ class ReportsActivity : AppCompatActivity() {
             showDatePicker { date ->
                 etStart.setText(date)
                 startDateFlow.value = date
+                if (spTimePeriod.selectedItemPosition != 4) {
+                    spTimePeriod.setSelection(4)
+                }
             }
         }
 
@@ -401,6 +412,9 @@ class ReportsActivity : AppCompatActivity() {
             showDatePicker { date ->
                 etEnd.setText(date)
                 endDateFlow.value = date
+                if (spTimePeriod.selectedItemPosition != 4) {
+                    spTimePeriod.setSelection(4)
+                }
             }
         }
 
@@ -594,12 +608,14 @@ class ReportsActivity : AppCompatActivity() {
                 }
                 3 -> true
                 4 -> {
-                    if (customStart.isEmpty() || customEnd.isEmpty()) true
+                    if (customStart.isEmpty() && customEnd.isEmpty()) true
                     else {
-                        val start = try { sdf.parse(customStart) } catch(_: Exception) { null }
-                        val end = try { sdf.parse(customEnd) } catch(_: Exception) { null }
-                        if (start == null || end == null) true
-                        else !expenseDate.before(start) && !expenseDate.after(end)
+                        val start = if (customStart.isNotEmpty()) try { sdf.parse(customStart) } catch(_: Exception) { null } else null
+                        val end = if (customEnd.isNotEmpty()) try { sdf.parse(customEnd) } catch(_: Exception) { null } else null
+                        
+                        val afterStart = start?.let { !expenseDate.before(it) } ?: true
+                        val beforeEnd = end?.let { !expenseDate.after(it) } ?: true
+                        afterStart && beforeEnd
                     }
                 }
                 else -> true
@@ -628,6 +644,12 @@ class ReportsActivity : AppCompatActivity() {
                     val diff = end.time - start.time
                     val days = diff / (1000 * 60 * 60 * 24)
                     (days / 30.0).coerceAtLeast(1.0)
+                } else if (expenses.isNotEmpty()) {
+                    val dates = expenses.mapNotNull { try { sdf.parse(it.date) } catch(_: Exception) { null } }
+                    if (dates.isNotEmpty()) {
+                        val diff = dates.maxOf { it.time } - dates.minOf { it.time }
+                        (diff / (1000L * 60 * 60 * 24 * 30)).toDouble().coerceAtLeast(1.0)
+                    } else 1.0
                 } else 1.0
             }
             else -> {
@@ -754,6 +776,7 @@ class FilteredExpenseAdapter(
             } else {
                 holder.ivReceipt.setImageResource(android.R.drawable.ic_menu_camera)
                 holder.ivReceipt.scaleType = ImageView.ScaleType.FIT_CENTER
+                holder.ivReceipt.imageTintList = android.content.res.ColorStateList.valueOf("#0D2B45".toColorInt())
             }
 
             holder.ivReceipt.setOnClickListener { onPhotoClick(expense) }
