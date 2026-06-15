@@ -1,3 +1,30 @@
 <resources>
     <string name="app_name">Pocket Eye</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_expense">Expense</string>
+    <string name="nav_goals">Goals</string>
+    <string name="nav_report">Report</string>
+    <string name="nav_profile">Profile</string>
+    <string name="currency_format">R%d</string>
+    <string name="currency_format_decimal">R%.2f</string>
+    <string name="xp_progress_format">%d / 100 XP</string>
+    <string name="level_format">Level %d</string>
+    <string name="default_amount">1.00</string>
+    <string name="pdf_title">PocketEye Expense Report</string>
+    <string name="total_expenses_label">Total Expenses: %s</string>
+    <string name="export_success">PDF Exported to: %s</string>
+    <string name="export_failed">Export Failed: %s</string>
+    <string name="all_categories">All Categories</string>
+    <string name="category_food">Food</string>
+    <string name="category_shopping">Shopping</string>
+    <string name="category_bills">Bills</string>
+    <string name="category_transport">Transport</string>
+    <string name="category_other">Other</string>
+    <string name="error_fill_fields">Please fill in all required fields</string>
+    <string name="expense_saved">Expense saved!</string>
+    <string name="goal_updated">Goal \'%s\' updated!</string>
+    <string name="goal_added">Goal \'%s\' added!</string>
+    <string name="error_invalid_goal">Please enter a valid goal name and target</string>
+    <string name="edit_goals">Edit Goals</string>
+    <string name="savings_goals">Savings Goals</string>
 </resources>

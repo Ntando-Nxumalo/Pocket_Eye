@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.ntando.expensetracker.data.database.DatabaseProvider
+import com.ntando.expensetracker.data.entity.Achievement
 import com.ntando.expensetracker.data.entity.User
 import kotlinx.coroutines.launch
 
@@ -44,8 +45,20 @@ class RegisterActivity : AppCompatActivity() {
                 if (existingUser != null) {
                     Toast.makeText(this@RegisterActivity, "User already exists", Toast.LENGTH_SHORT).show()
                 } else {
-                    // FIX: Pass the password to the User constructor
-                    db.userDao().insertUser(User(name = username, email = username, password = password))
+                    val userId = db.userDao().insertUser(User(name = username, email = username, password = password))
+                    
+                    // Initialize achievements for the new user
+                    val initialAchievements = listOf(
+                        Achievement(userId = userId, title = "First Step", description = "Log your first expense", icon = "star"),
+                        Achievement(userId = userId, title = "Week Warrior", description = "Log expenses for 7 consecutive days", icon = "bolt"),
+                        Achievement(userId = userId, title = "Budget Boss", description = "Stay within your monthly goal for the full month", icon = "account_balance_wallet"),
+                        Achievement(userId = userId, title = "Consistent Tracker", description = "Log at least one expense every day for 30 days", icon = "calendar_month")
+                    )
+                    
+                    initialAchievements.forEach {
+                        db.achievementDao().insertAchievement(it)
+                    }
+
                     Toast.makeText(this@RegisterActivity, "Registration successful!", Toast.LENGTH_SHORT).show()
                     finish()
                 }

@@ -1,5 +1,6 @@
 package com.ntando.expensetracker
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -27,11 +28,17 @@ class MainActivity : AppCompatActivity() {
             if (username.isNotEmpty() && password.isNotEmpty()) {
                 lifecycleScope.launch {
                     val db = DatabaseProvider.getDatabase(this@MainActivity)
-                    // Check by name or email
                     val user = db.userDao().getUserByName(username) ?: db.userDao().getUserByEmail(username)
                     
                     if (user != null) {
                         if (user.password == password) {
+                            // Store user ID in SharedPreferences
+                            val sharedPref = getSharedPreferences("PocketEyePrefs", Context.MODE_PRIVATE)
+                            with(sharedPref.edit()) {
+                                putLong("current_user_id", user.id)
+                                apply()
+                            }
+
                             val intent = Intent(this@MainActivity, Dashboard::class.java)
                             startActivity(intent)
                             finish()

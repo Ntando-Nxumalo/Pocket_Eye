@@ -75,8 +75,8 @@
                         android:layout_marginBottom="16dp"
                         android:background="@drawable/rounded_edittext"
                         android:hint="Choose a username"
-                        android:textColor="@android:color/black"
-                        android:textColorHint="#78909C"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/hint_black"
                         android:padding="12dp" />
 
                     <!-- Password -->
@@ -97,8 +97,8 @@
                         android:background="@drawable/rounded_edittext"
                         android:hint="Create a password"
                         android:inputType="textPassword"
-                        android:textColor="@android:color/black"
-                        android:textColorHint="#78909C"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/hint_black"
                         android:padding="12dp" />
 
                     <!-- Confirm Password -->
@@ -119,8 +119,8 @@
                         android:background="@drawable/rounded_edittext"
                         android:hint="Confirm your password"
                         android:inputType="textPassword"
-                        android:textColor="@android:color/black"
-                        android:textColorHint="#78909C"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/hint_black"
                         android:padding="12dp" />
 
                     <!-- Register Button -->

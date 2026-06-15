@@ -8,11 +8,11 @@ import kotlinx.coroutines.flow.Flow
 interface CategoryDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertCategory(category: Category)
+    suspend fun insertCategory(category: Category): Long
 
-    @Query("SELECT * FROM categories")
-    fun getAllCategories(): Flow<List<Category>>
+    @Query("SELECT * FROM categories WHERE userId = :userId OR userId = -1")
+    fun getAllCategories(userId: Long): Flow<List<Category>>
 
-    @Query("SELECT * FROM categories")
-    suspend fun getAllCategoriesOnce(): List<Category>
+    @Query("SELECT * FROM categories WHERE userId = :userId OR userId = -1")
+    suspend fun getAllCategoriesOnce(userId: Long): List<Category>
 }

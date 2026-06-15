@@ -71,8 +71,8 @@
                 android:background="@drawable/rounded_edittext"
                 android:hint="Enter your username"
                 android:padding="12dp"
-                android:textColor="@android:color/black"
-                android:textColorHint="#78909C" />
+                android:textColor="@color/black"
+                android:textColorHint="@color/black" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -93,8 +93,8 @@
                 android:hint="Enter your password"
                 android:inputType="textPassword"
                 android:padding="12dp"
-                android:textColor="@android:color/black"
-                android:textColorHint="#78909C" />
+                android:textColor="@color/black"
+                android:textColorHint="@color/black" />
 
             <Button
                 android:id="@+id/btnLogin"

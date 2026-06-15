@@ -11,9 +11,9 @@ import kotlinx.coroutines.flow.Flow
 class UserRepository(private val userDao: UserDao) {
 
     /**
-     * Retrieve the current user from the database.
+     * Retrieve the user by ID from the database.
      */
-    val user: Flow<User?> = userDao.getUser()
+    fun getUserById(id: Long): Flow<User?> = userDao.getUserById(id)
 
     /**
      * Insert a new user into the database.

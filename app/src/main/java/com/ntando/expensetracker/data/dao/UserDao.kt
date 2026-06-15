@@ -8,13 +8,13 @@ import kotlinx.coroutines.flow.Flow
 interface UserDao {
 
     @Insert
-    suspend fun insertUser(user: User)
+    suspend fun insertUser(user: User): Long
 
     @Update
     suspend fun updateUser(user: User)
 
-    @Query("SELECT * FROM users LIMIT 1")
-    fun getUser(): Flow<User?>
+    @Query("SELECT * FROM users WHERE id = :id")
+    fun getUserById(id: Long): Flow<User?>
 
     @Query("SELECT * FROM users WHERE name = :name")
     suspend fun getUserByName(name: String): User?

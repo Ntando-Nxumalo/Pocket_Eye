@@ -26,13 +26,14 @@ object DatabaseProvider {
                     CoroutineScope(Dispatchers.IO).launch {
                         val database = getDatabase(context)
                         val categoryDao = database.categoryDao()
-                        val existing = categoryDao.getAllCategoriesOnce()
-                        if (existing.isEmpty()) {
-                            categoryDao.insertCategory(Category(id = 1, name = "Food"))
-                            categoryDao.insertCategory(Category(id = 2, name = "Shopping"))
-                            categoryDao.insertCategory(Category(id = 3, name = "Bills"))
-                            categoryDao.insertCategory(Category(id = 4, name = "Transport"))
-                            categoryDao.insertCategory(Category(id = 5, name = "Other"))
+                        // Ensure global categories exist (userId = -1)
+                        val existingGlobal = categoryDao.getAllCategoriesOnce(-1)
+                        if (existingGlobal.isEmpty()) {
+                            categoryDao.insertCategory(Category(name = "Food", userId = -1))
+                            categoryDao.insertCategory(Category(name = "Shopping", userId = -1))
+                            categoryDao.insertCategory(Category(name = "Bills", userId = -1))
+                            categoryDao.insertCategory(Category(name = "Transport", userId = -1))
+                            categoryDao.insertCategory(Category(name = "Other", userId = -1))
                         }
                     }
                 }

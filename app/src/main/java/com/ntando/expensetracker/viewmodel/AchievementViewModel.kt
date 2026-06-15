@@ -9,9 +9,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class AchievementViewModel(private val repository: AchievementRepository) : ViewModel() {
+class AchievementViewModel(
+    private val repository: AchievementRepository,
+    private val userId: Long
+) : ViewModel() {
 
-    val achievements: StateFlow<List<Achievement>> = repository.allAchievements.stateIn(
+    val achievements: StateFlow<List<Achievement>> = repository.getAllAchievements(userId).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = emptyList()

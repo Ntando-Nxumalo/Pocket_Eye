@@ -36,7 +36,17 @@ class SplashActivity : AppCompatActivity() {
         // Use Coroutines for a smoother transition
         lifecycleScope.launch {
             delay(2500)
-            val intent = Intent(this@SplashActivity, MainActivity::class.java)
+            
+            val sharedPref = getSharedPreferences("PocketEyePrefs", MODE_PRIVATE)
+            val currentUserId = sharedPref.getLong("current_user_id", -1L)
+            
+            val nextActivity = if (currentUserId != -1L) {
+                Dashboard::class.java
+            } else {
+                MainActivity::class.java
+            }
+            
+            val intent = Intent(this@SplashActivity, nextActivity)
             startActivity(intent)
             @Suppress("DEPRECATION")
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)

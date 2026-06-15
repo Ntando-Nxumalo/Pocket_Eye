@@ -12,14 +12,21 @@ import androidx.room.PrimaryKey
             entity = Category::class,
             parentColumns = ["id"],
             childColumns = ["categoryId"],
-            onDelete = ForeignKey.CASCADE // Clean up expenses if category is removed
+            onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = User::class,
+            parentColumns = ["id"],
+            childColumns = ["userId"],
+            onDelete = ForeignKey.CASCADE
         )
     ],
-    indices = [Index(value = ["categoryId"])]
+    indices = [Index(value = ["categoryId"]), Index(value = ["userId"])]
 )
 data class Expense(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
+    val userId: Long, // Link to User
     val categoryId: Int,
     val amount: Double,
     val description: String,

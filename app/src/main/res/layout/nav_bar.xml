@@ -6,9 +6,9 @@
     android:layout_height="80dp"
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
-    android:layout_marginBottom="80dp"
+    android:layout_marginBottom="16dp"
     android:layout_marginTop="12dp"
-    app:cardBackgroundColor="@android:color/white"
+    app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="28dp"
     app:cardElevation="12dp">
 
@@ -18,7 +18,8 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:baselineAligned="false"
-        android:paddingHorizontal="8dp">
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
 
         <!-- Home (Dashboard) -->
         <LinearLayout
@@ -36,19 +37,20 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@android:drawable/ic_menu_today"
-                app:tint="#2196F3" />
+                android:contentDescription="@string/nav_home"
+                app:tint="@color/primary_blue" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Home"
-                android:textColor="#2196F3"
+                android:text="@string/nav_home"
+                android:textColor="@color/primary_blue"
                 android:textSize="11sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Add Expense -->
+        <!-- Expense -->
         <LinearLayout
             android:id="@+id/btnAddExpense"
             android:layout_width="0dp"
@@ -64,14 +66,15 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@android:drawable/ic_input_add"
-                app:tint="#2196F3" />
+                android:contentDescription="@string/nav_expense"
+                app:tint="@color/primary_blue" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Expense"
-                android:textColor="#2196F3"
+                android:text="@string/nav_expense"
+                android:textColor="@color/primary_blue"
                 android:textSize="11sp" />
         </LinearLayout>
 
@@ -91,20 +94,21 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@android:drawable/ic_menu_compass"
-                app:tint="#2196F3" />
+                android:contentDescription="@string/nav_goals"
+                app:tint="@color/primary_blue" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Goals"
-                android:textColor="#2196F3"
+                android:text="@string/nav_goals"
+                android:textColor="@color/primary_blue"
                 android:textSize="11sp" />
         </LinearLayout>
 
-        <!-- Reports -->
+        <!-- Report -->
         <LinearLayout
-            android:id="@+id/btnReports"
+            android:id="@+id/btnReportNav"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -117,15 +121,16 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@android:drawable/ic_menu_sort_by_size"
-                app:tint="#2196F3" />
+                android:src="@android:drawable/ic_menu_agenda"
+                android:contentDescription="@string/nav_report"
+                app:tint="@color/primary_blue" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Reports"
-                android:textColor="#2196F3"
+                android:text="@string/nav_report"
+                android:textColor="@color/primary_blue"
                 android:textSize="11sp" />
         </LinearLayout>
 

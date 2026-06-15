@@ -13,12 +13,12 @@ class GoalRepository(private val goalDao: GoalDao) {
     /**
      * Fetch all user goals as a Flow.
      */
-    val allGoals: Flow<List<Goal>> = goalDao.getAllGoals()
+    fun getAllGoals(userId: Long): Flow<List<Goal>> = goalDao.getAllGoals(userId)
 
     /**
-     * Fetch the top 2 goals as a Flow.
+     * Fetch all savings goals (no category link) as a Flow.
      */
-    val topGoals: Flow<List<Goal>> = goalDao.getTopGoals()
+    fun getSavingsGoals(userId: Long): Flow<List<Goal>> = goalDao.getSavingsGoals(userId)
 
     /**
      * Insert or replace a spending goal.
