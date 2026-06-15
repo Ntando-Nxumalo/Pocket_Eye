@@ -43,7 +43,7 @@ A real-time tool on the dashboard to quickly convert expenses between **ZAR, USD
 ## 🔧 Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/PocketEye.git
+   git clone https://github.com/Ntando-Nxumalo/PocketEye.git
    ```
 2. Open the project in **Android Studio** (Ladybug 2024.2.1 or newer recommended).
 3. Ensure you have the **Android SDK 35** installed.
